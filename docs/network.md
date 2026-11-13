@@ -19,7 +19,7 @@ Every forward needs a reason. Anything not in this table must not be forwarded.
 | 443/tcp | t630:443 | Nginx Proxy Manager | All public web apps |
 | 42069/udp | t630:42069 | TeamSpeak 6 voice | Not HTTP, cannot go through the proxy |
 | 30033/tcp | t630:30033 | TeamSpeak 6 file transfer | Not HTTP |
-| 8555 | t630:8555 | go2rtc WebRTC | **Under review** — only needed if the camera stream is shared outside the LAN |
+| 8555/tcp | t630:8555 | go2rtc WebRTC | Friends watch the grow cam via WebRTC (`onlyplants` viewer) |
 
 Removed:
 

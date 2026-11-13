@@ -1,0 +1,74 @@
+# Camera stack: go2rtc (streaming), Frigate (NVR), vivosun-fetcher (camera credentials)
+# CLI equivalent: run.sh (keep both in sync)
+name: camera
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  go2rtc:
+    image: alexxit/go2rtc:1.9.15
+    container_name: go2rtc
+    restart: unless-stopped
+    # was privileged: true - not needed, the config only relays RTSP (no ffmpeg/exec)
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      TZ: Europe/Berlin
+    ports:
+      - "8555:8555/tcp"        # WebRTC for the public viewer (router forward)
+    volumes:
+      - /docker/config/go2rtc:/config
+    networks:
+      - media
+    logging: *logging
+
+  frigate:
+    image: ghcr.io/blakeblackshear/frigate:0.18.2
+    container_name: frigate
+    restart: unless-stopped
+    shm_size: "256mb"
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+      - /dev/dri/renderD128:/dev/dri/renderD128   # iGPU for hardware video decoding
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /docker/config/frigate:/config
+      - /home/rock/media:/media/frigate
+      - /etc/localtime:/etc/localtime:ro
+    tmpfs:
+      - /tmp/cache
+    # No published ports: NPM proxies https://frigate:8971 by name
+    networks:
+      - media
+    logging: *logging
+
+  vivosun-fetcher:
+    image: ghcr.io/igridz/vivosun-fetcher:latest   # own image, built by its repo's CI
+    container_name: vivosun-fetcher
+    restart: unless-stopped
+    depends_on:
+      - go2rtc
+      - frigate
+    env_file: .env
+    environment:
+      TZ: Europe/Berlin
+      GO2RTC_API_URL: http://go2rtc:1984,http://frigate:1984
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - media
+    logging: *logging
+
+networks:
+  media:
+    external: true
