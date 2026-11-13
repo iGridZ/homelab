@@ -6,7 +6,7 @@ services:
   autoheal:
     # No maintained version tags upstream (1.2.0 is from 2021), so the image is
     # pinned by digest. Update: see README.md
-    image: willfarrell/autoheal:latest@sha256:DIGEST_PENDING
+    image: willfarrell/autoheal:latest@sha256:53320121f32db551b8e19cdd5ff28eb1e5cece62845cc46683d4479b6a58b77e
     container_name: autoheal
     restart: unless-stopped
     network_mode: none         # talks to Docker only via the socket, needs no network

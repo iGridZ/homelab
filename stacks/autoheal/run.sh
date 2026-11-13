@@ -2,7 +2,7 @@
 # Same configuration as compose.yaml, as plain docker CLI commands.
 set -euo pipefail
 
-IMAGE="willfarrell/autoheal:latest@sha256:DIGEST_PENDING"
+IMAGE="willfarrell/autoheal:latest@sha256:53320121f32db551b8e19cdd5ff28eb1e5cece62845cc46683d4479b6a58b77e"
 
 docker rm -f autoheal >/dev/null 2>&1 || true
 docker run -d --name autoheal \
