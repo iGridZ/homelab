@@ -6,11 +6,12 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
-- [ ] Archive `~/frigate.sh`, `~/go2rtx.sh` and the old fetcher run script; check the `onlyplants` viewer from outside
+- [ ] Remove lxd snap, disable ModemManager/multipathd/wpa_supplicant, apt autoremove — [runbook](docs/runbooks/host-setup.md) step 5
+- [ ] Archive `~/frigate.sh`, `~/go2rtx.sh` and the old fetcher run script
 - [ ] Archive `~/sonarr.sh`, `~/radarr.sh`, `~/sab.sh`
 - [ ] Archive `~/autoheal.sh` and `~/ddns.sh` (replaced by stacks)
 - [ ] Archive `~/beszel.sh` and `~/beszel_agent.sh` (replaced by `stacks/beszel`)
-- [ ] Check SMART values + long self-test of the spare HDDs (PC + drawer) with `smartctl -x`; decide which drive is usable for backups
+- [ ] Spare drives: sda (WD Red 2 TB) ruled out (71 UNC errors, 3 failed self-tests); sdb (1 TB WD white label) clean, long self-test running (first run interrupted by host reset); drawer drive still to check
 - [ ] Scan existing repos (GrowLog, GrowView) with gitleaks
 - [ ] TeamSpeak: currently stopped on purpose (Erik starts it later); restart policy is `no` → `unless-stopped`
 - [ ] Archive `~/changedetection.sh`
@@ -19,11 +20,10 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ### Planned
 - [ ] Backups: dedicated 256 GB SATA SSD via USB → restic, nightly systemd timer, documented restore test
 - [ ] Compose migration, one stack per PR, least critical first: pinned images, no published ports behind NPM, `no-new-privileges`, no `privileged` (go2rtc)
-- [ ] `/etc/docker/daemon.json`: global log rotation
 - [ ] Self-hosted GitHub Actions runner on the host: deploy changed stacks on merge to `main` (push to `main` only, no PR jobs on the runner)
 - [ ] Renovate for image update PRs (replaces watchtower)
-- [ ] Apt updates (46 pending) + plan Ubuntu 22.04 → 24.04
-- [ ] Performance: zram + lower swappiness, check Frigate hardware decoding (VA-API), `docker builder prune`, disable unused services (ModemManager, snap/lxd)
+- [ ] Plan Ubuntu 22.04 → 24.04 (standard support ends 2027-04)
+- [ ] Frigate: ~27 % CPU is likely object detection (decoding already on the iGPU) → check detector, detect fps/resolution
 
 ### Ideas (not decided)
 - [ ] `sudo` with YubiKey touch (pam-u2f)
@@ -33,10 +33,18 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 
 ## Done
 
+### 2026-11-13 – host tuning (feature/host-config)
+- [x] `/etc/docker/daemon.json`: global log rotation + `live-restore` (containers survived the daemon restart)
+- [x] System up to date (apt)
+- [x] zram (zstd, 50 %, priority 100) in front of the SSD swap file
+- [x] Frigate already uses VA-API automatically; iGPU decodes H.264 + HEVC
+- [x] Host config files in `host/`, runbook `docs/runbooks/host-setup.md`
+
 ### 2026-11-13 – stacks/camera
 - [x] go2rtc (no `privileged`, no capabilities), Frigate, vivosun-fetcher (GHCR) deployed from `dev`; live view OK in Frigate + go2rtc
 - [x] Host ports 1984, 8554, 8556, 8557, 8971, 8555/udp closed; only 8555/tcp (WebRTC) remains
 - [x] GrowView removed (no longer used)
+- [x] `onlyplants` viewer works from outside (5G, PWA)
 
 ### 2026-11-13 – stacks/arr
 - [x] Sonarr, Radarr, SABnzbd deployed from `dev`; host ports 7878/8989/8080 closed, download client host `sabnzbd:8080`

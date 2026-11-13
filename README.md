@@ -80,6 +80,7 @@ flowchart LR
 │   ├── network.md           # ports, Docker networks, access matrix
 │   ├── decisions/           # architecture decision records (ADRs)
 │   └── runbooks/            # step-by-step operational procedures
+├── host/                    # config files of the host itself (docker, ssh, zram)
 ├── scripts/
 │   └── inventory.sh         # read-only snapshot of the host (redacts secrets)
 ├── stacks/                  # one folder per service: compose.yaml + run.sh + .env.example
