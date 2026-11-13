@@ -1,0 +1,16 @@
+# Secrets never go into git — only *.env.example files are committed
+.env
+*.env
+!*.env.example
+!.env.example
+
+# Local data, backups, inventory output
+data/
+backups/
+homelab-inventory-*.txt
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
