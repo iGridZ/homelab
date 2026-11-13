@@ -61,9 +61,9 @@ flowchart LR
 | Jellyfin | Media server | Public via NPM |
 | Vaultwarden | Password manager (Bitwarden-compatible) | Public via NPM |
 | Sonarr / Radarr / SABnzbd | Media automation ([stack](stacks/arr)) | Via NPM, app login |
-| Frigate + go2rtc | NVR / camera streaming (grow tent cam) | LAN, see notes |
+| Frigate + go2rtc | NVR / camera streaming (grow tent cam) ([stack](stacks/camera)) | Frigate via NPM (login) · viewer path-filtered |
 | GrowLog | My own grow-journal web app ([repo](https://github.com/iGridZ/Growlog)) | Public via NPM |
-| vivosun-fetcher | Feeds camera credentials into go2rtc | Internal |
+| vivosun-fetcher | Feeds camera credentials into go2rtc ([own repo](https://github.com/iGridZ/vivosun-fetcher)) | Internal |
 | changedetection.io | Website change monitoring ([stack](stacks/changedetection)) | LAN/VPN |
 | Crafty | Minecraft server controller | LAN/VPN |
 | TeamSpeak 6 | Voice server | Public (direct port forward) |

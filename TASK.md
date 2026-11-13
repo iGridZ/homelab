@@ -6,6 +6,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
+- [ ] Test `stacks/camera` from `dev` (backup Frigate + go2rtc configs first), then archive `~/frigate.sh`, `~/go2rtx.sh` and the old fetcher run script
 - [ ] Archive `~/sonarr.sh`, `~/radarr.sh`, `~/sab.sh`
 - [ ] Archive `~/autoheal.sh` and `~/ddns.sh` (replaced by stacks)
 - [ ] Archive `~/beszel.sh` and `~/beszel_agent.sh` (replaced by `stacks/beszel`)
@@ -13,7 +14,6 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Scan existing repos (GrowLog, GrowView) with gitleaks
 - [ ] TeamSpeak: currently stopped on purpose (Erik starts it later); restart policy is `no` → `unless-stopped`
 - [ ] Archive `~/changedetection.sh`
-- [ ] Decide on port forward 8555 (go2rtc WebRTC): only needed if the cam is watched from outside
 - [ ] TradingView alert bot: if it goes public again → NPM access list with TradingView webhook IPs only + a secret in the alert payload
 
 ### Planned
