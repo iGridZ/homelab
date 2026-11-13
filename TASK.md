@@ -7,7 +7,6 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 
 ### Next up
 - [ ] SSH: add YubiKey 1 tonight (log in with YubiKey 2 to append its public key), add it to `~/.ssh/config` — [runbook](docs/runbooks/ssh-fido2-yubikey.md)
-- [ ] Delete the unused Portainer certificate in NPM; remove `portainer.<domain>` from the DDNS `DOMAINS` list and delete its record in Cloudflare
 - [ ] Rotate the Cloudflare tunnel token (or delete the unused tunnel) and the Beszel agent token
 - [ ] Check the Cloudflare API token scope (DNS edit, own zones only)
 - [ ] Archive the old `docker run` scripts in `~` that are no longer used; `chmod 600` the rest
@@ -40,6 +39,10 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [x] SSH login with YubiKey 2 (`ed25519-sk`, resident, PIN required) tested
 - [x] sshd hardened: FIDO2 keys only, no passwords, no root login (`10-hardening.conf`, verified with `sshd -T`)
 - [x] Client `~/.ssh/config` alias: `ssh rock`
+- [x] Removed `wg-easy`, `watchtower`, `playwright-chrome`, `portainer_agent` (Portainer uses the local socket)
+- [x] Portainer disconnected from `media`; Portainer certificate, DDNS entry and DNS record removed
+- [x] `certbot.timer` disabled
+- [x] `docker image prune` + `builder prune`: images 22.1 → 18.2 GB, build cache 4.5 GB → 0.7 GB
 - [x] Removed `wg-easy`, `watchtower`, `playwright-chrome`, `portainer_agent` (Portainer uses the local socket)
 - [x] Portainer disconnected from `media`; leftover `certbot.timer` disabled; unused images and build cache pruned
 - [x] Decision: keep Nginx Proxy Manager ([ADR 0004](docs/decisions/0004-keep-nginx-proxy-manager.md))
