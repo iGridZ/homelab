@@ -1,0 +1,64 @@
+# Beszel – lightweight host and container monitoring (hub + agent)
+# CLI equivalent: run.sh (keep both in sync)
+name: beszel
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  hub:
+    image: henrygd/beszel:0.21.1
+    container_name: beszel
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Berlin
+      APP_URL: http://localhost:8090
+    ports:
+      - "8090:8090"            # web UI, LAN/VPN only (no router forward)
+    volumes:
+      - beszel_data:/beszel_data
+    networks:
+      - media
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "/beszel", "health", "--url", "http://localhost:8090"]
+      interval: 120s
+      start_period: 10s
+    logging: *logging
+
+  agent:
+    image: henrygd/beszel-agent:0.21.1
+    container_name: beszel-agent
+    restart: unless-stopped
+    network_mode: host         # needs the host's network view for interface stats
+    environment:
+      TZ: Europe/Berlin
+      LISTEN: "45876"
+      HUB_URL: http://localhost:8090
+      KEY: ${BESZEL_AGENT_KEY:?set BESZEL_AGENT_KEY in .env}
+      TOKEN: ${BESZEL_AGENT_TOKEN:?set BESZEL_AGENT_TOKEN in .env}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro   # read-only: container stats
+      - beszel_agent_data:/var/lib/beszel-agent
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "/agent", "health"]
+      interval: 120s
+      start_period: 10s
+    logging: *logging
+
+networks:
+  media:
+    external: true
+
+# Existing volumes from the old docker-run setup are reused, so no data is lost
+volumes:
+  beszel_data:
+    external: true
+  beszel_agent_data:
+    external: true
