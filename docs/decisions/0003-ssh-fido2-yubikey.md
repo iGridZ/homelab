@@ -1,6 +1,6 @@
 # 0003 – SSH with FIDO2 hardware keys only
 
-- **Status:** Accepted (rollout in progress)
+- **Status:** Accepted (implemented 2026-11-13, second key pending)
 - **Date:** 2026-11-13
 
 ## Context

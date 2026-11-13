@@ -41,7 +41,7 @@ Out of scope: targeted, well-resourced attackers and physical access.
 | # | Layer | Status |
 |---|---|---|
 | 1 | Perimeter: minimal port forwards, admin via VPN | ✅ done |
-| 2 | SSH: hardware keys only | 🔄 in progress |
+| 2 | SSH: hardware keys only | ✅ done |
 | 3 | Secrets out of scripts and git | 🔄 in progress |
 | 4 | Backups with a tested restore | ⏳ planned (dedicated USB SSD) |
 | 5 | Container hardening: pinned images, no `--privileged`, `no-new-privileges`, dropped capabilities | ⏳ during Compose migration |

@@ -6,9 +6,9 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
-- [ ] SSH: add YubiKey 1, test both keys, apply `10-hardening.conf` (at home, console as fallback). Decision: SSH login always with a FIDO2 key, no other key types — [runbook](docs/runbooks/ssh-fido2-yubikey.md)
+- [ ] SSH: add YubiKey 1 tonight (log in with YubiKey 2 to append its public key), add it to `~/.ssh/config` — [runbook](docs/runbooks/ssh-fido2-yubikey.md)
 - [ ] Remove `wg-easy`, `watchtower`, `playwright-chrome`
-- [ ] `portainer_agent`: check environment type in Portainer (socket vs. agent), remove if unused
+- [ ] Remove `portainer_agent` (unused: Portainer's only environment uses the local Docker socket)
 - [ ] Delete the unused Portainer certificate in NPM; remove `portainer.<domain>` from the DDNS `DOMAINS` list and delete its record in Cloudflare
 - [ ] Disconnect Portainer from the `media` network (no proxy host anymore)
 - [ ] Disable the leftover `certbot.timer` (NPM handles certificates)
@@ -42,6 +42,8 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [x] CI: shellcheck, yamllint, compose validation, gitleaks
 - [x] `scripts/inventory.sh` (read-only host snapshot with secret redaction)
 - [x] SSH login with YubiKey 2 (`ed25519-sk`, resident, PIN required) tested
+- [x] sshd hardened: FIDO2 keys only, no passwords, no root login (`10-hardening.conf`, verified with `sshd -T`)
+- [x] Client `~/.ssh/config` alias: `ssh rock`
 - [x] Decision: keep Nginx Proxy Manager ([ADR 0004](docs/decisions/0004-keep-nginx-proxy-manager.md))
 
 ### 2026-11-12 – security first pass (on the host)
