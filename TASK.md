@@ -7,10 +7,8 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 
 ### Next up
 - [ ] SSH: add YubiKey 1 tonight (log in with YubiKey 2 to append its public key), add it to `~/.ssh/config` — [runbook](docs/runbooks/ssh-fido2-yubikey.md)
-- [ ] Rotate the Cloudflare tunnel token (or delete the unused tunnel) and the Beszel agent token
-- [ ] Check the Cloudflare API token scope (DNS edit, own zones only)
 - [ ] Scan existing repos (GrowLog, GrowView) with gitleaks
-- [ ] TeamSpeak: restart policy is `no` (does not come back after a reboot) → `unless-stopped`
+- [ ] TeamSpeak: currently stopped on purpose (Erik starts it later); restart policy is `no` → `unless-stopped`
 - [ ] playwright-chrome (kept): exited since 2026-11-01, check why and whether changedetection can reach it
 - [ ] Decide on port forward 8555 (go2rtc WebRTC): only needed if the cam is watched from outside
 - [ ] Fill in the proxy host table in `docs/network.md` from the NPM UI
@@ -43,6 +41,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [x] Removed `wg-easy`, `watchtower`, `portainer_agent` (Portainer uses the local socket); `playwright-chrome` is kept
 - [x] Portainer disconnected from `media`; Portainer certificate, DDNS entry and DNS record removed
 - [x] `certbot.timer` disabled
+- [x] Cloudflare: unused tunnel/token cleaned up, API token scope checked; Beszel agent token rotated
 - [x] Old `docker run` scripts archived to `~/archive` (700), remaining scripts `chmod 600`
 - [x] 3 orphaned anonymous Jellyfin cache volumes identified for removal (Jellyfin stack will use a fixed cache bind mount)
 - [x] `docker image prune` + `builder prune`: images 22.1 → 18.2 GB, build cache 4.5 GB → 0.7 GB
