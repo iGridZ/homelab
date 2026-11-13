@@ -11,6 +11,8 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Check the Cloudflare API token scope (DNS edit, own zones only)
 - [ ] Archive the old `docker run` scripts in `~` that are no longer used; `chmod 600` the rest
 - [ ] Scan existing repos (GrowLog, GrowView) with gitleaks
+- [ ] TeamSpeak: restart policy is `no` (does not come back after a reboot) → `unless-stopped`
+- [ ] playwright-chrome (kept): exited since 2026-11-01, check why and whether changedetection can reach it
 - [ ] Decide on port forward 8555 (go2rtc WebRTC): only needed if the cam is watched from outside
 - [ ] Fill in the proxy host table in `docs/network.md` from the NPM UI
 - [ ] Check login on every proxied app (changedetection has none by default)
@@ -39,11 +41,11 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [x] SSH login with YubiKey 2 (`ed25519-sk`, resident, PIN required) tested
 - [x] sshd hardened: FIDO2 keys only, no passwords, no root login (`10-hardening.conf`, verified with `sshd -T`)
 - [x] Client `~/.ssh/config` alias: `ssh rock`
-- [x] Removed `wg-easy`, `watchtower`, `playwright-chrome`, `portainer_agent` (Portainer uses the local socket)
+- [x] Removed `wg-easy`, `watchtower`, `portainer_agent` (Portainer uses the local socket); `playwright-chrome` is kept
 - [x] Portainer disconnected from `media`; Portainer certificate, DDNS entry and DNS record removed
 - [x] `certbot.timer` disabled
 - [x] `docker image prune` + `builder prune`: images 22.1 → 18.2 GB, build cache 4.5 GB → 0.7 GB
-- [x] Removed `wg-easy`, `watchtower`, `playwright-chrome`, `portainer_agent` (Portainer uses the local socket)
+- [x] Removed `wg-easy`, `watchtower`, `portainer_agent` (Portainer uses the local socket); `playwright-chrome` is kept
 - [x] Portainer disconnected from `media`; leftover `certbot.timer` disabled; unused images and build cache pruned
 - [x] Decision: keep Nginx Proxy Manager ([ADR 0004](docs/decisions/0004-keep-nginx-proxy-manager.md))
 
