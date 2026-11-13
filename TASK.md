@@ -6,6 +6,8 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
+- [ ] Archive `~/beszel.sh` and `~/beszel_agent.sh` (replaced by `stacks/beszel`)
+- [ ] Check SMART values + long self-test of the spare HDDs (PC + drawer) with `smartctl -x`; decide which drive is usable for backups
 - [ ] SSH: add YubiKey 1 tonight (log in with YubiKey 2 to append its public key), add it to `~/.ssh/config` — [runbook](docs/runbooks/ssh-fido2-yubikey.md)
 - [ ] Scan existing repos (GrowLog, GrowView) with gitleaks
 - [ ] TeamSpeak: currently stopped on purpose (Erik starts it later); restart policy is `no` → `unless-stopped`
@@ -30,6 +32,9 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-13 – stacks/beszel
+- [x] Beszel hub + agent migrated to Compose (pinned 0.21.1, existing volumes reused, secrets in `.env`), deployed from `dev` and running on the host
 
 ### 2026-11-13 – feature/repo-skeleton
 - [x] Repo structure, README with architecture, threat model, network doc, ADRs 0001–0004, SSH runbook
