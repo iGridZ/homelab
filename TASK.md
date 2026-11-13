@@ -6,12 +6,13 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
+- [ ] Test `stacks/arr` from `dev`, then archive `~/sonarr.sh`, `~/radarr.sh`, `~/sab.sh`
 - [ ] Archive `~/autoheal.sh` and `~/ddns.sh` (replaced by stacks)
 - [ ] Archive `~/beszel.sh` and `~/beszel_agent.sh` (replaced by `stacks/beszel`)
 - [ ] Check SMART values + long self-test of the spare HDDs (PC + drawer) with `smartctl -x`; decide which drive is usable for backups
 - [ ] Scan existing repos (GrowLog, GrowView) with gitleaks
 - [ ] TeamSpeak: currently stopped on purpose (Erik starts it later); restart policy is `no` → `unless-stopped`
-- [ ] Test `stacks/changedetection` from `dev` (backup `/docker/changedetection` first), then archive `~/changedetection.sh`; set a UI password in changedetection
+- [ ] Archive `~/changedetection.sh`
 - [ ] Decide on port forward 8555 (go2rtc WebRTC): only needed if the cam is watched from outside
 - [ ] TradingView alert bot: if it goes public again → NPM access list with TradingView webhook IPs only + a secret in the alert payload
 
@@ -31,6 +32,9 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-13 – stacks/changedetection
+- [x] changedetection 0.60.10 deployed from `dev` (upgrade, datastore backed up first), healthy; browser as optional profile
 
 ### 2026-11-13 – proxy host review
 - [x] Proxy host table in `docs/network.md` (domains as placeholders)
