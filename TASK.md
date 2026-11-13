@@ -6,7 +6,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
-- [ ] Test `stacks/camera` from `dev` (backup Frigate + go2rtc configs first), then archive `~/frigate.sh`, `~/go2rtx.sh` and the old fetcher run script
+- [ ] Archive `~/frigate.sh`, `~/go2rtx.sh` and the old fetcher run script; check the `onlyplants` viewer from outside
 - [ ] Archive `~/sonarr.sh`, `~/radarr.sh`, `~/sab.sh`
 - [ ] Archive `~/autoheal.sh` and `~/ddns.sh` (replaced by stacks)
 - [ ] Archive `~/beszel.sh` and `~/beszel_agent.sh` (replaced by `stacks/beszel`)
@@ -32,6 +32,11 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-13 – stacks/camera
+- [x] go2rtc (no `privileged`, no capabilities), Frigate, vivosun-fetcher (GHCR) deployed from `dev`; live view OK in Frigate + go2rtc
+- [x] Host ports 1984, 8554, 8556, 8557, 8971, 8555/udp closed; only 8555/tcp (WebRTC) remains
+- [x] GrowView removed (no longer used)
 
 ### 2026-11-13 – stacks/arr
 - [x] Sonarr, Radarr, SABnzbd deployed from `dev`; host ports 7878/8989/8080 closed, download client host `sabnzbd:8080`
