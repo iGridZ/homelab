@@ -44,7 +44,7 @@ Out of scope: targeted, well-resourced attackers and physical access.
 | 2 | SSH: hardware keys only | ✅ done |
 | 3 | Secrets out of scripts and git | ✅ first pass done (leaked tokens rotated, old scripts archived) |
 | 4 | Backups with a tested restore | ⏳ planned (dedicated USB SSD) |
-| 5 | Container hardening: pinned images, no `--privileged`, `no-new-privileges`, dropped capabilities | 🔄 in progress — no privileged containers left, 8 stacks migrated |
+| 5 | Container hardening: pinned images, no `--privileged`, `no-new-privileges`, dropped capabilities | 🔄 in progress — no privileged containers left, 6 stacks migrated |
 | 6 | Network segmentation: proxy network vs. backend networks | ⏳ during Compose migration |
 | 7 | Intrusion prevention: CrowdSec on the NPM logs | 💡 idea |
 | 8 | Patch management: Renovate PRs, image scanning in CI | 💡 idea |
