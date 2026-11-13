@@ -7,11 +7,11 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 
 ### Next up
 - [ ] Remove lxd snap, disable ModemManager/multipathd/wpa_supplicant, apt autoremove — [runbook](docs/runbooks/host-setup.md) step 5
-- [ ] Archive `~/frigate.sh`, `~/go2rtx.sh` and the old fetcher run script; check the `onlyplants` viewer from outside
+- [ ] Archive `~/frigate.sh`, `~/go2rtx.sh` and the old fetcher run script
 - [ ] Archive `~/sonarr.sh`, `~/radarr.sh`, `~/sab.sh`
 - [ ] Archive `~/autoheal.sh` and `~/ddns.sh` (replaced by stacks)
 - [ ] Archive `~/beszel.sh` and `~/beszel_agent.sh` (replaced by `stacks/beszel`)
-- [ ] Check SMART values + long self-test of the spare HDDs (PC + drawer) with `smartctl -x`; decide which drive is usable for backups
+- [ ] Spare drives: sda (WD Red 2 TB) ruled out (71 UNC errors, 3 failed self-tests); sdb (1 TB WD white label) clean, long self-test running (first run interrupted by host reset); drawer drive still to check
 - [ ] Scan existing repos (GrowLog, GrowView) with gitleaks
 - [ ] TeamSpeak: currently stopped on purpose (Erik starts it later); restart policy is `no` → `unless-stopped`
 - [ ] Archive `~/changedetection.sh`
@@ -44,6 +44,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [x] go2rtc (no `privileged`, no capabilities), Frigate, vivosun-fetcher (GHCR) deployed from `dev`; live view OK in Frigate + go2rtc
 - [x] Host ports 1984, 8554, 8556, 8557, 8971, 8555/udp closed; only 8555/tcp (WebRTC) remains
 - [x] GrowView removed (no longer used)
+- [x] `onlyplants` viewer works from outside (5G, PWA)
 
 ### 2026-11-13 – stacks/arr
 - [x] Sonarr, Radarr, SABnzbd deployed from `dev`; host ports 7878/8989/8080 closed, download client host `sabnzbd:8080`
