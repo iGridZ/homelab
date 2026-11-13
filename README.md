@@ -60,7 +60,7 @@ flowchart LR
 | Portainer | Docker management UI | LAN/VPN |
 | Jellyfin | Media server | Public via NPM |
 | Vaultwarden | Password manager (Bitwarden-compatible) | Public via NPM |
-| Sonarr / Radarr / SABnzbd | Media automation | Via NPM, app login |
+| Sonarr / Radarr / SABnzbd | Media automation ([stack](stacks/arr)) | Via NPM, app login |
 | Frigate + go2rtc | NVR / camera streaming (grow tent cam) | LAN, see notes |
 | GrowLog | My own grow-journal web app ([repo](https://github.com/iGridZ/Growlog)) | Public via NPM |
 | vivosun-fetcher | Feeds camera credentials into go2rtc | Internal |
