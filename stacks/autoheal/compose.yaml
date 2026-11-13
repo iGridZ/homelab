@@ -1,0 +1,27 @@
+# autoheal – restarts containers whose healthcheck reports "unhealthy"
+# CLI equivalent: run.sh (keep both in sync)
+name: autoheal
+
+services:
+  autoheal:
+    # No maintained version tags upstream (1.2.0 is from 2021), so the image is
+    # pinned by digest. Update: see README.md
+    image: willfarrell/autoheal:latest@sha256:53320121f32db551b8e19cdd5ff28eb1e5cece62845cc46683d4479b6a58b77e
+    container_name: autoheal
+    restart: unless-stopped
+    network_mode: none         # talks to Docker only via the socket, needs no network
+    environment:
+      TZ: Europe/Berlin
+      AUTOHEAL_CONTAINER_LABEL: all   # watch every container that has a healthcheck
+      AUTOHEAL_INTERVAL: "5"
+      AUTOHEAL_DEFAULT_STOP_TIMEOUT: "10"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock   # read-write: it must restart containers
+      - /etc/localtime:/etc/localtime:ro
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
