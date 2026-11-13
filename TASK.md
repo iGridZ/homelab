@@ -6,7 +6,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
-- [ ] Test `stacks/arr` from `dev`, then archive `~/sonarr.sh`, `~/radarr.sh`, `~/sab.sh`
+- [ ] Archive `~/sonarr.sh`, `~/radarr.sh`, `~/sab.sh`
 - [ ] Archive `~/autoheal.sh` and `~/ddns.sh` (replaced by stacks)
 - [ ] Archive `~/beszel.sh` and `~/beszel_agent.sh` (replaced by `stacks/beszel`)
 - [ ] Check SMART values + long self-test of the spare HDDs (PC + drawer) with `smartctl -x`; decide which drive is usable for backups
@@ -32,6 +32,9 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-13 – stacks/arr
+- [x] Sonarr, Radarr, SABnzbd deployed from `dev`; host ports 7878/8989/8080 closed, download client host `sabnzbd:8080`
 
 ### 2026-11-13 – stacks/changedetection
 - [x] changedetection 0.60.10 deployed from `dev` (upgrade, datastore backed up first), healthy; browser as optional profile
