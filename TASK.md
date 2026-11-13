@@ -45,8 +45,6 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [x] Portainer disconnected from `media`; Portainer certificate, DDNS entry and DNS record removed
 - [x] `certbot.timer` disabled
 - [x] `docker image prune` + `builder prune`: images 22.1 → 18.2 GB, build cache 4.5 GB → 0.7 GB
-- [x] Removed `wg-easy`, `watchtower`, `portainer_agent` (Portainer uses the local socket); `playwright-chrome` is kept
-- [x] Portainer disconnected from `media`; leftover `certbot.timer` disabled; unused images and build cache pruned
 - [x] Decision: keep Nginx Proxy Manager ([ADR 0004](docs/decisions/0004-keep-nginx-proxy-manager.md))
 
 ### 2026-11-12 – security first pass (on the host)
