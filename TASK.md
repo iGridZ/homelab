@@ -9,7 +9,6 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Archive `~/autoheal.sh` and `~/ddns.sh` (replaced by stacks)
 - [ ] Archive `~/beszel.sh` and `~/beszel_agent.sh` (replaced by `stacks/beszel`)
 - [ ] Check SMART values + long self-test of the spare HDDs (PC + drawer) with `smartctl -x`; decide which drive is usable for backups
-- [ ] SSH: add YubiKey 1 tonight (log in with YubiKey 2 to append its public key), add it to `~/.ssh/config` — [runbook](docs/runbooks/ssh-fido2-yubikey.md)
 - [ ] Scan existing repos (GrowLog, GrowView) with gitleaks
 - [ ] TeamSpeak: currently stopped on purpose (Erik starts it later); restart policy is `no` → `unless-stopped`
 - [ ] playwright-chrome (kept): exited since 2026-11-01, check why and whether changedetection can reach it
@@ -33,6 +32,9 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-13 – SSH second key
+- [x] YubiKey 1 added; both keys work (PC prefers YubiKey 1, notebook YubiKey 2)
 
 ### 2026-11-13 – stacks/autoheal, stacks/cloudflare-ddns
 - [x] cloudflare-ddns 1.17.1 deployed from `dev`: non-root, read-only, all caps dropped; records up to date
