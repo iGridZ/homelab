@@ -97,6 +97,14 @@ From the still-open session (or the local console):
 sudo rm /etc/ssh/sshd_config.d/10-hardening.conf && sudo systemctl restart ssh
 ```
 
+## Troubleshooting
+
+`signing failed … invalid format` together with `Server accepts key` in `ssh -v`
+means the server and the key file are fine and Windows could not talk to the
+YubiKey (`ssh-sk-helper` error). Close Yubico Authenticator completely (also the
+tray icon), re-plug the YubiKey, make sure the **matching** YubiKey is plugged in,
+and if needed restart the PC.
+
 ## New client PC
 
 Keys were created with `resident`, so they can be loaded from the YubiKey:
