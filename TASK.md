@@ -6,6 +6,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
+- [ ] Remove lxd snap, disable ModemManager/multipathd/wpa_supplicant, apt autoremove — [runbook](docs/runbooks/host-setup.md) step 5
 - [ ] Archive `~/frigate.sh`, `~/go2rtx.sh` and the old fetcher run script; check the `onlyplants` viewer from outside
 - [ ] Archive `~/sonarr.sh`, `~/radarr.sh`, `~/sab.sh`
 - [ ] Archive `~/autoheal.sh` and `~/ddns.sh` (replaced by stacks)
@@ -19,11 +20,10 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ### Planned
 - [ ] Backups: dedicated 256 GB SATA SSD via USB → restic, nightly systemd timer, documented restore test
 - [ ] Compose migration, one stack per PR, least critical first: pinned images, no published ports behind NPM, `no-new-privileges`, no `privileged` (go2rtc)
-- [ ] `/etc/docker/daemon.json`: global log rotation
 - [ ] Self-hosted GitHub Actions runner on the host: deploy changed stacks on merge to `main` (push to `main` only, no PR jobs on the runner)
 - [ ] Renovate for image update PRs (replaces watchtower)
-- [ ] Apt updates (46 pending) + plan Ubuntu 22.04 → 24.04
-- [ ] Performance: zram + lower swappiness, check Frigate hardware decoding (VA-API), `docker builder prune`, disable unused services (ModemManager, snap/lxd)
+- [ ] Plan Ubuntu 22.04 → 24.04 (standard support ends 2027-04)
+- [ ] Frigate: ~27 % CPU is likely object detection (decoding already on the iGPU) → check detector, detect fps/resolution
 
 ### Ideas (not decided)
 - [ ] `sudo` with YubiKey touch (pam-u2f)
@@ -32,6 +32,13 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-13 – host tuning (feature/host-config)
+- [x] `/etc/docker/daemon.json`: global log rotation + `live-restore` (containers survived the daemon restart)
+- [x] System up to date (apt)
+- [x] zram (zstd, 50 %, priority 100) in front of the SSD swap file
+- [x] Frigate already uses VA-API automatically; iGPU decodes H.264 + HEVC
+- [x] Host config files in `host/`, runbook `docs/runbooks/host-setup.md`
 
 ### 2026-11-13 – stacks/camera
 - [x] go2rtc (no `privileged`, no capabilities), Frigate, vivosun-fetcher (GHCR) deployed from `dev`; live view OK in Frigate + go2rtc
