@@ -6,7 +6,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
-- [ ] Test `stacks/autoheal` + `stacks/cloudflare-ddns` from `dev` on the host, then archive `~/autoheal.sh` and `~/ddns.sh`
+- [ ] Archive `~/autoheal.sh` and `~/ddns.sh` (replaced by stacks)
 - [ ] Archive `~/beszel.sh` and `~/beszel_agent.sh` (replaced by `stacks/beszel`)
 - [ ] Check SMART values + long self-test of the spare HDDs (PC + drawer) with `smartctl -x`; decide which drive is usable for backups
 - [ ] SSH: add YubiKey 1 tonight (log in with YubiKey 2 to append its public key), add it to `~/.ssh/config` — [runbook](docs/runbooks/ssh-fido2-yubikey.md)
@@ -33,6 +33,10 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-13 – stacks/autoheal, stacks/cloudflare-ddns
+- [x] cloudflare-ddns 1.17.1 deployed from `dev`: non-root, read-only, all caps dropped; records up to date
+- [x] autoheal deployed from `dev` (digest-pinned, no network)
 
 ### 2026-11-13 – stacks/beszel
 - [x] Beszel hub + agent migrated to Compose (pinned 0.21.1, existing volumes reused, secrets in `.env`), deployed from `dev` and running on the host
