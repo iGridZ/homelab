@@ -6,10 +6,10 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
-- [ ] SSH: add YubiKey 1, test both keys, apply `10-hardening.conf` (at home, console as fallback) — [runbook](docs/runbooks/ssh-fido2-yubikey.md)
+- [ ] SSH: add YubiKey 1, test both keys, apply `10-hardening.conf` (at home, console as fallback). Decision: SSH login always with a FIDO2 key, no other key types — [runbook](docs/runbooks/ssh-fido2-yubikey.md)
 - [ ] Remove `wg-easy`, `watchtower`, `playwright-chrome`
 - [ ] `portainer_agent`: check environment type in Portainer (socket vs. agent), remove if unused
-- [ ] Confirm: Portainer proxy host + certificate deleted in NPM, `portainer.<domain>` removed from DDNS and Cloudflare
+- [ ] Delete the unused Portainer certificate in NPM; remove `portainer.<domain>` from the DDNS `DOMAINS` list and delete its record in Cloudflare
 - [ ] Disconnect Portainer from the `media` network (no proxy host anymore)
 - [ ] Disable the leftover `certbot.timer` (NPM handles certificates)
 - [ ] Rotate the Cloudflare tunnel token (or delete the unused tunnel) and the Beszel agent token
@@ -48,3 +48,4 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [x] Removed router forward 8443 → Portainer 9443; admin panels LAN/VPN-only ([ADR 0001](docs/decisions/0001-admin-panels-vpn-only.md))
 - [x] FRITZ!Box WireGuard set up (full tunnel) ([ADR 0002](docs/decisions/0002-fritzbox-wireguard.md))
 - [x] Crontab cleaned (daily reboot and screen jobs removed)
+- [x] Portainer proxy host removed from NPM
