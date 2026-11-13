@@ -47,11 +47,47 @@ Never proxy publicly: **go2rtc API (:1984)** and **Frigate's unauthenticated por
 
 NPM keeps its configuration in a database, so this table is the reviewed source of
 truth ([ADR 0004](decisions/0004-keep-nginx-proxy-manager.md)). Hostnames use the
-placeholder `<domain>`.
+placeholders `<domain>` (main domain) and `<media-domain>` (Jellyfin).
 
-| Hostname | Forward to | Access | App login |
+| Hostname | Forward to | Access | Protection |
 |---|---|---|---|
-| _to be filled in from the NPM proxy host list_ | | | |
+| `<media-domain>` | `http://jellyfin:8096` | Public | Jellyfin login |
+| `vw.<domain>` | `http://192.168.1.245:8081` | Public | Vaultwarden login (master password) |
+| `growlog.<domain>` | `http://growlog:8087` | Public | GrowLog login |
+| `frigate.<domain>` | `https://frigate:8971` | Public | Frigate login (authenticated port, never `:5000`) |
+| `sonarr.<domain>` | `http://sonarr:8989` | Public | Forms login |
+| `radarr.<domain>` | `http://radarr:7878` | Public | Forms login |
+| `sabnzbd.<domain>` | `http://sabnzbd:8080` | Public | SABnzbd login |
+| `mon.<domain>` | `http://beszel:8090` | Public | Beszel login |
+| `onlyplants.<domain>` | `http://go2rtc:1984` | Public, **path-filtered** | Only the `growcam` viewer is reachable, see below |
+
+Not proxied (LAN/VPN only): Portainer, NPM admin, changedetection, Crafty, TradingView alert bot.
+
+### onlyplants: public camera viewer without exposing go2rtc
+
+go2rtc's API on `:1984` has no authentication and can create streams with `exec:`
+sources, so it must never be fully public. The proxy host only lets through what the
+viewer page needs (Websockets Support enabled, Advanced config):
+
+```nginx
+# Only the public stream page for "growcam" — everything else in go2rtc is blocked
+set $deny 1;
+if ($uri ~ "^/(video-stream|video-rtc)\.js$") { set $deny 0; }
+if ($request_uri ~ "^/(stream\.html|api/ws)\?src=growcam(&|$)") { set $deny 0; }
+if ($deny) { return 403; }
+```
+
+Result: `/stream.html?src=growcam` works; `/`, `/api/streams`, `/api/config` and every
+other stream return `403`.
+
+### Lesson learned: IP access lists and hairpin NAT
+
+Requests to a public hostname from inside the LAN or over WireGuard are hairpinned
+by the FRITZ!Box and reach NPM with the **public IP** as source. IP-based access
+lists therefore cannot distinguish "home" from "internet" for proxied hostnames.
+Consequences: admin tools get no hostname at all ([ADR 0001](decisions/0001-admin-panels-vpn-only.md)),
+and public hosts rely on app logins, HTTP basic auth or path filters. IP allow-lists
+only work for callers that really come from outside (e.g. webhook providers).
 
 ## Docker networks
 

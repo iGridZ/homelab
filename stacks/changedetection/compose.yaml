@@ -1,0 +1,54 @@
+# changedetection.io – website change monitoring, with an optional headless browser
+# CLI equivalent: run.sh (keep both in sync)
+#
+#   docker compose up -d                      # changedetection only
+#   docker compose --profile browser up -d    # plus the headless Chrome
+name: changedetection
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  changedetection:
+    image: dgtlmoon/changedetection.io:0.60.10
+    container_name: changedetection
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Berlin
+      # used only by watches set to "Playwright/Chrome"; plain watches work without it
+      PLAYWRIGHT_DRIVER_URL: ws://playwright-chrome:3000
+    ports:
+      - "5001:5000"            # web UI, LAN/VPN only (not proxied)
+    volumes:
+      - /docker/changedetection:/datastore
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000', timeout=5)"]
+      interval: 60s
+      timeout: 10s
+      start_period: 30s
+    logging: *logging
+
+  playwright-chrome:
+    image: dgtlmoon/sockpuppetbrowser:0.0.4
+    container_name: playwright-chrome
+    profiles: ["browser"]      # optional: only started with --profile browser
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Berlin
+      SCREEN_WIDTH: "1920"
+      SCREEN_HEIGHT: "1024"
+      SCREEN_DEPTH: "16"
+      MAX_CONCURRENT_CHROME_PROCESSES: "4"   # thin client: 4 parallel tabs are plenty
+      LOG_LEVEL: INFO                        # was DEBUG: one log line every 3 seconds
+    mem_limit: 1g              # Chrome must not starve the rest of the host
+    security_opt:
+      - no-new-privileges:true
+    logging: *logging
+
+# No published port and no "media" network for the browser: both services share
+# this stack's own default network and nothing else can reach the browser.

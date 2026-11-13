@@ -6,15 +6,15 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
+- [ ] Archive `~/sonarr.sh`, `~/radarr.sh`, `~/sab.sh`
 - [ ] Archive `~/autoheal.sh` and `~/ddns.sh` (replaced by stacks)
 - [ ] Archive `~/beszel.sh` and `~/beszel_agent.sh` (replaced by `stacks/beszel`)
 - [ ] Check SMART values + long self-test of the spare HDDs (PC + drawer) with `smartctl -x`; decide which drive is usable for backups
 - [ ] Scan existing repos (GrowLog, GrowView) with gitleaks
 - [ ] TeamSpeak: currently stopped on purpose (Erik starts it later); restart policy is `no` → `unless-stopped`
-- [ ] playwright-chrome (kept): exited since 2026-11-01, check why and whether changedetection can reach it
+- [ ] Archive `~/changedetection.sh`
 - [ ] Decide on port forward 8555 (go2rtc WebRTC): only needed if the cam is watched from outside
-- [ ] Fill in the proxy host table in `docs/network.md` from the NPM UI
-- [ ] Check login on every proxied app (changedetection has none by default)
+- [ ] TradingView alert bot: if it goes public again → NPM access list with TradingView webhook IPs only + a secret in the alert payload
 
 ### Planned
 - [ ] Backups: dedicated 256 GB SATA SSD via USB → restic, nightly systemd timer, documented restore test
@@ -32,6 +32,19 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-13 – stacks/arr
+- [x] Sonarr, Radarr, SABnzbd deployed from `dev`; host ports 7878/8989/8080 closed, download client host `sabnzbd:8080`
+
+### 2026-11-13 – stacks/changedetection
+- [x] changedetection 0.60.10 deployed from `dev` (upgrade, datastore backed up first), healthy; browser as optional profile
+
+### 2026-11-13 – proxy host review
+- [x] Proxy host table in `docs/network.md` (domains as placeholders)
+- [x] `onlyplants` (go2rtc :1984) was fully public without auth → path filter in NPM: only `stream.html?src=growcam` + websocket
+- [x] Logins confirmed: SABnzbd, Sonarr, Radarr, Beszel; changedetection + Crafty are not proxied (LAN only)
+- [x] Beszel stays public via `mon.<domain>` with its own login (decision)
+- [x] `alert` proxy host removed (bot had no secret check)
 
 ### 2026-11-13 – SSH second key
 - [x] YubiKey 1 added; both keys work (PC prefers YubiKey 1, notebook YubiKey 2)
