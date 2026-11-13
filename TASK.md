@@ -9,7 +9,6 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] SSH: add YubiKey 1 tonight (log in with YubiKey 2 to append its public key), add it to `~/.ssh/config` — [runbook](docs/runbooks/ssh-fido2-yubikey.md)
 - [ ] Rotate the Cloudflare tunnel token (or delete the unused tunnel) and the Beszel agent token
 - [ ] Check the Cloudflare API token scope (DNS edit, own zones only)
-- [ ] Archive the old `docker run` scripts in `~` that are no longer used; `chmod 600` the rest
 - [ ] Scan existing repos (GrowLog, GrowView) with gitleaks
 - [ ] TeamSpeak: restart policy is `no` (does not come back after a reboot) → `unless-stopped`
 - [ ] playwright-chrome (kept): exited since 2026-11-01, check why and whether changedetection can reach it
@@ -44,6 +43,8 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [x] Removed `wg-easy`, `watchtower`, `portainer_agent` (Portainer uses the local socket); `playwright-chrome` is kept
 - [x] Portainer disconnected from `media`; Portainer certificate, DDNS entry and DNS record removed
 - [x] `certbot.timer` disabled
+- [x] Old `docker run` scripts archived to `~/archive` (700), remaining scripts `chmod 600`
+- [x] 3 orphaned anonymous Jellyfin cache volumes identified for removal (Jellyfin stack will use a fixed cache bind mount)
 - [x] `docker image prune` + `builder prune`: images 22.1 → 18.2 GB, build cache 4.5 GB → 0.7 GB
 - [x] Decision: keep Nginx Proxy Manager ([ADR 0004](docs/decisions/0004-keep-nginx-proxy-manager.md))
 
