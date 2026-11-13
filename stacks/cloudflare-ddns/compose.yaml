@@ -1,0 +1,27 @@
+# cloudflare-ddns – keeps the Cloudflare DNS records pointed at the home IP
+# CLI equivalent: run.sh (keep both in sync)
+name: cloudflare-ddns
+
+services:
+  cloudflare-ddns:
+    image: favonia/cloudflare-ddns:1.17.1
+    container_name: cloudflare-ddns
+    restart: unless-stopped
+    network_mode: host         # detect the real public IP of the host
+    user: "1000:1000"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      TZ: Europe/Berlin
+      CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN:?set CLOUDFLARE_API_TOKEN in .env}
+      DOMAINS: ${DOMAINS:?set DOMAINS in .env}
+      PROXIED: "false"
+      IP6_PROVIDER: none       # the host has no public IPv6 address
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

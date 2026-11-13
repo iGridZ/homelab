@@ -67,9 +67,9 @@ flowchart LR
 | changedetection.io | Website change monitoring | Via NPM |
 | Crafty | Minecraft server controller | Via NPM |
 | TeamSpeak 6 | Voice server | Public (direct port forward) |
-| Beszel + agent | Lightweight host/container monitoring | LAN |
-| cloudflare-ddns | Keeps DNS records pointed at the home IP | Internal |
-| autoheal | Restarts unhealthy containers | Internal |
+| Beszel + agent | Lightweight host/container monitoring ([stack](stacks/beszel)) | LAN |
+| cloudflare-ddns | Keeps DNS records pointed at the home IP ([stack](stacks/cloudflare-ddns)) | Internal |
+| autoheal | Restarts unhealthy containers ([stack](stacks/autoheal)) | Internal |
 
 ## Repository layout
 
