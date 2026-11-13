@@ -60,9 +60,8 @@ placeholders `<domain>` (main domain) and `<media-domain>` (Jellyfin).
 | `sabnzbd.<domain>` | `http://sabnzbd:8080` | Public | SABnzbd login |
 | `mon.<domain>` | `http://beszel:8090` | Public | Beszel login |
 | `onlyplants.<domain>` | `http://go2rtc:1984` | Public, **path-filtered** | Only the `growcam` viewer is reachable, see below |
-| `alert.<domain>` | `http://192.168.1.245:8082` | Public (TradingView webhooks) | ⚠️ no secret check yet |
 
-Not proxied (LAN/VPN only): Portainer, NPM admin, changedetection, Crafty.
+Not proxied (LAN/VPN only): Portainer, NPM admin, changedetection, Crafty, TradingView alert bot.
 
 ### onlyplants: public camera viewer without exposing go2rtc
 
