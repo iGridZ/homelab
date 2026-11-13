@@ -11,7 +11,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Check SMART values + long self-test of the spare HDDs (PC + drawer) with `smartctl -x`; decide which drive is usable for backups
 - [ ] Scan existing repos (GrowLog, GrowView) with gitleaks
 - [ ] TeamSpeak: currently stopped on purpose (Erik starts it later); restart policy is `no` → `unless-stopped`
-- [ ] playwright-chrome (kept): exited since 2026-11-01, check why and whether changedetection can reach it
+- [ ] Test `stacks/changedetection` from `dev` (backup `/docker/changedetection` first), then archive `~/changedetection.sh`; set a UI password in changedetection
 - [ ] Decide on port forward 8555 (go2rtc WebRTC): only needed if the cam is watched from outside
 - [ ] TradingView alert bot: if it goes public again → NPM access list with TradingView webhook IPs only + a secret in the alert payload
 

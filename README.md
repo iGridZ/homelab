@@ -64,8 +64,8 @@ flowchart LR
 | Frigate + go2rtc | NVR / camera streaming (grow tent cam) | LAN, see notes |
 | GrowLog | My own grow-journal web app ([repo](https://github.com/iGridZ/Growlog)) | Public via NPM |
 | vivosun-fetcher | Feeds camera credentials into go2rtc | Internal |
-| changedetection.io | Website change monitoring | Via NPM |
-| Crafty | Minecraft server controller | Via NPM |
+| changedetection.io | Website change monitoring ([stack](stacks/changedetection)) | LAN/VPN |
+| Crafty | Minecraft server controller | LAN/VPN |
 | TeamSpeak 6 | Voice server | Public (direct port forward) |
 | Beszel + agent | Lightweight host/container monitoring ([stack](stacks/beszel)) | LAN |
 | cloudflare-ddns | Keeps DNS records pointed at the home IP ([stack](stacks/cloudflare-ddns)) | Internal |
