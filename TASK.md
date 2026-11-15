@@ -11,7 +11,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Archive `~/sonarr.sh`, `~/radarr.sh`, `~/sab.sh`
 - [ ] Archive `~/autoheal.sh` and `~/ddns.sh` (replaced by stacks)
 - [ ] Archive `~/beszel.sh` and `~/beszel_agent.sh` (replaced by `stacks/beszel`)
-- [ ] Spare drives: sda (WD Red 2 TB) ruled out (71 UNC errors, 3 failed self-tests); sdb (1 TB WD white label) clean, long self-test running (first run interrupted by host reset); drawer drive still to check
+- [ ] Drawer drive: SMART check still to do
 - [ ] Scan existing repos (GrowLog, GrowView) with gitleaks
 - [ ] TeamSpeak: currently stopped on purpose (Erik starts it later); restart policy is `no` → `unless-stopped`
 - [ ] Archive `~/changedetection.sh`
@@ -32,6 +32,10 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-15 – spare drives
+- [x] sdb (1 TB WD white label): 2 extended self-tests passed, 0 errors → usable as backup drive (second / offline copy)
+- [x] sda (WD Red 2 TB): ruled out (71 UNC errors, 3 failed self-tests)
 
 ### 2026-11-13 – host tuning (feature/host-config)
 - [x] `/etc/docker/daemon.json`: global log rotation + `live-restore` (containers survived the daemon restart)
