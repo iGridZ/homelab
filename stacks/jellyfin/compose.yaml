@@ -1,0 +1,34 @@
+# Jellyfin – media server
+# CLI equivalent: run.sh (keep both in sync)
+name: jellyfin
+
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:12.4.20261026-211555
+    container_name: jellyfin
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Berlin
+    ports:
+      - "8096:8096"            # LAN clients (TVs, apps) connect by IP; public access via NPM
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128   # iGPU for hardware transcoding (enable VAAPI in the UI)
+    volumes:
+      - /docker/configs/jellyfin:/config
+      - /docker/configs/jellyfin-cache:/cache   # fixed folder instead of an anonymous volume
+      - /media/share/sonarr:/tv
+      - /media/share/radarr:/movies
+    networks:
+      - media
+    security_opt:
+      - no-new-privileges:true
+    # healthcheck comes from the image (HEALTHCHECK_URL=/health)
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  media:
+    external: true
