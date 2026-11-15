@@ -6,7 +6,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
-- [ ] Test `stacks/jellyfin` from `dev`, remove the old anonymous cache volume, archive `~/jellyfin.sh`; then try VAAPI transcoding in the UI
+- [ ] Remove the old anonymous Jellyfin cache volume (`84b81…`), archive `~/jellyfin.sh`
 - [ ] Remove lxd snap, disable ModemManager/multipathd/wpa_supplicant, apt autoremove — [runbook](docs/runbooks/host-setup.md) step 5
 - [ ] Archive `~/frigate.sh`, `~/go2rtx.sh` and the old fetcher run script
 - [ ] Archive `~/sonarr.sh`, `~/radarr.sh`, `~/sab.sh`
@@ -27,12 +27,16 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Frigate: ~27 % CPU is likely object detection (decoding already on the iGPU) → check detector, detect fps/resolution
 
 ### Ideas (not decided)
+- [ ] Jellyfin VAAPI: video transcoding is disabled per user (clients decode HEVC), only remux/audio transcoding is used; VAAPI would still speed up trickplay/thumbnail extraction
 - [ ] `sudo` with YubiKey touch (pam-u2f)
 - [ ] CrowdSec on the NPM logs
 - [ ] Beszel alerts to Discord/Telegram
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-15 – stacks/jellyfin
+- [x] Jellyfin 12.4 deployed from `dev`: works via LAN IP:8096 and domain; cache in fixed folder; iGPU passed in (not enabled)
 
 ### 2026-11-15 – spare drives
 - [x] sdb (1 TB WD white label, 3.5"): 2 extended self-tests passed, 0 errors → usable as backup drive (second / offline copy); needs a USB-SATA adapter with its own 12 V power supply
