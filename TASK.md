@@ -34,7 +34,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Done
 
 ### 2026-11-15 – spare drives
-- [x] sdb (1 TB WD white label): 2 extended self-tests passed, 0 errors → usable as backup drive (second / offline copy)
+- [x] sdb (1 TB WD white label, 3.5"): 2 extended self-tests passed, 0 errors → usable as backup drive (second / offline copy); needs a USB-SATA adapter with its own 12 V power supply
 - [x] sda (WD Red 2 TB): ruled out (71 UNC errors, 3 failed self-tests)
 
 ### 2026-11-13 – host tuning (feature/host-config)
