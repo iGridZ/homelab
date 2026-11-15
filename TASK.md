@@ -6,6 +6,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
+- [ ] Test `stacks/jellyfin` from `dev`, remove the old anonymous cache volume, archive `~/jellyfin.sh`; then try VAAPI transcoding in the UI
 - [ ] Remove lxd snap, disable ModemManager/multipathd/wpa_supplicant, apt autoremove — [runbook](docs/runbooks/host-setup.md) step 5
 - [ ] Archive `~/frigate.sh`, `~/go2rtx.sh` and the old fetcher run script
 - [ ] Archive `~/sonarr.sh`, `~/radarr.sh`, `~/sab.sh`
