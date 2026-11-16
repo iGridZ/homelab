@@ -7,18 +7,12 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 
 ### Next up
 - [ ] Release: `dev` → `main` (11 commits: jellyfin, teamspeak, portainer, growlog stacks + docs)
-- [ ] Remove Crafty: `docker rm -f crafty_container`, later `/docker/crafty` (decision: Crafty goes)
-- [ ] TeamSpeak: deploy `stacks/teamspeak` from `dev` (verify image digest = beta13.1 first)
-- [ ] Remove the old anonymous Jellyfin cache volume (`84b81…`)
-- [ ] Host step 5: remove lxd snap, disable ModemManager/multipathd/wpa_supplicant, `apt autoremove` — [runbook](docs/runbooks/host-setup.md)
-- [ ] Archive old run scripts in `~` (replaced by stacks): `beszel.sh`, `beszel_agent.sh`, `autoheal.sh`, `ddns.sh`, `changedetection.sh`, `sonarr.sh`, `radarr.sh`, `sab.sh`, `frigate.sh`, `go2rtx.sh`, old fetcher script, `jellyfin.sh`, `ts6.sh`, `crafty.sh`, `growlog/growlog.sh`
-- [ ] Drawer drive: SMART check
+- [ ] Archive old run scripts in `~` (replaced by stacks): `beszel.sh`, `beszel_agent.sh`, `autoheal.sh`, `ddns.sh`, `changedetection.sh`, `sonarr.sh`, `radarr.sh`, `sab.sh`, `frigate.sh`, `go2rtx.sh`, `jellyfin.sh`, `ts6.sh`, `crafty.sh`, `growlog/growlog.sh`, old fetcher script
 - [ ] Scan existing repos (GrowLog, vivosun-fetcher) with gitleaks
 
 ### Remaining migrations
 - [ ] twitch-old-old (kept): stack with digest-pinned image; `run.py` + `cookies/` stay on the host; port 5000 needed?
 - [ ] alert2 (kept): fork upstream `raftheunis87/tradingview-to-telegram-webhook-bot` → own repo, Node 14 → 22, Telegram token/chat id via `.env`, CI `dev`/`latest` to GHCR, then stack. Webhook not reachable right now (proxy host removed); if public again: NPM access list with TradingView webhook IPs + secret in the alert payload
-- [ ] GrowLog: deploy `stacks/growlog` when it is used again (backup `/docker/data/growlog` first)
 - [ ] After backup adapter: Vaultwarden + NPM stacks
 
 ### Planned
@@ -40,7 +34,12 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 
 ### 2026-11-16 – compose migration status
 - [x] 10 stacks in the repo (16 containers), no `privileged` containers left
-- [x] Crafty: decision to remove; twitch-old-old and alert2: decision to keep
+- [x] Crafty removed; twitch-old-old and alert2 kept (decision)
+- [x] TeamSpeak re-created from `stacks/teamspeak` (not started)
+- [x] GrowLog running from `stacks/growlog`
+- [x] Old anonymous Jellyfin cache volume removed
+- [x] Host step 5: lxd snap removed, unused services disabled
+- [x] Drawer drive SMART check done
 
 ### 2026-11-16 – stacks/portainer
 - [x] Portainer 2.45.3 deployed from `dev`: port 8000 closed, 9443 LAN/VPN by IP, data volume reused
