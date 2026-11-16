@@ -57,7 +57,7 @@ flowchart LR
 | Service | Purpose | Access |
 |---|---|---|
 | Nginx Proxy Manager | Reverse proxy, Let's Encrypt certificates | Public :443 · admin UI LAN/VPN |
-| Portainer | Docker management UI | LAN/VPN |
+| Portainer | Docker management UI ([stack](stacks/portainer)) | LAN/VPN |
 | Jellyfin | Media server ([stack](stacks/jellyfin)) | Public via NPM · LAN :8096 |
 | Vaultwarden | Password manager (Bitwarden-compatible) | Public via NPM |
 | Sonarr / Radarr / SABnzbd | Media automation ([stack](stacks/arr)) | Via NPM, app login |
