@@ -14,7 +14,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Archive `~/beszel.sh` and `~/beszel_agent.sh` (replaced by `stacks/beszel`)
 - [ ] Drawer drive: SMART check still to do
 - [ ] Scan existing repos (GrowLog, GrowView) with gitleaks
-- [ ] TeamSpeak: currently stopped on purpose (Erik starts it later); restart policy is `no` → `unless-stopped`
+- [ ] TeamSpeak: deploy `stacks/teamspeak` from `dev` (verify image digest = beta13.1 first), archive `~/ts6.sh`
 - [ ] Archive `~/changedetection.sh`
 - [ ] TradingView alert bot: if it goes public again → NPM access list with TradingView webhook IPs only + a secret in the alert payload
 
