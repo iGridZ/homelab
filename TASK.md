@@ -6,6 +6,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
+- [ ] Deploy `stacks/growlog` from `dev` when GrowLog is used again (backup `/docker/data/growlog` first), archive `~/growlog/growlog.sh`
 - [ ] Deploy `stacks/portainer` from `dev` (over SSH), archive the old Portainer run command
 - [ ] Remove the old anonymous Jellyfin cache volume (`84b81…`), archive `~/jellyfin.sh`
 - [ ] Remove lxd snap, disable ModemManager/multipathd/wpa_supplicant, apt autoremove — [runbook](docs/runbooks/host-setup.md) step 5
@@ -28,6 +29,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Frigate: ~27 % CPU is likely object detection (decoding already on the iGPU) → check detector, detect fps/resolution
 
 ### Ideas (not decided)
+- [ ] GrowLog CI: also build a `:dev` image (currently only `:latest` from `main`)
 - [ ] Jellyfin VAAPI: video transcoding is disabled per user (clients decode HEVC), only remux/audio transcoding is used; VAAPI would still speed up trickplay/thumbnail extraction
 - [ ] `sudo` with YubiKey touch (pam-u2f)
 - [ ] CrowdSec on the NPM logs
