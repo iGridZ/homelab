@@ -6,6 +6,10 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
+- [ ] Remove Crafty: `docker rm -f crafty_container`, later `/docker/crafty` (decision: Crafty goes), archive `~/crafty.sh`
+- [ ] twitch-old-old (kept): stack with digest-pinned image; `run.py` + `cookies/` stay on the host; port 5000 needed?
+- [ ] alert2 (kept): fork upstream `raftheunis87/tradingview-to-telegram-webhook-bot` → own repo, Node 14 → 22, Telegram token/chat id via `.env`, CI `dev`/`latest` to GHCR, then stack; webhook currently not reachable (proxy host removed)
+- [ ] After backup adapter: Vaultwarden + NPM stacks
 - [ ] Deploy `stacks/growlog` from `dev` when GrowLog is used again (backup `/docker/data/growlog` first), archive `~/growlog/growlog.sh`
 - [ ] Deploy `stacks/portainer` from `dev` (over SSH), archive the old Portainer run command
 - [ ] Remove the old anonymous Jellyfin cache volume (`84b81…`), archive `~/jellyfin.sh`
