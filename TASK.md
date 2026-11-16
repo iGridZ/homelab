@@ -6,7 +6,6 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
-- [ ] Deploy `stacks/portainer` from `dev` (over SSH), archive the old Portainer run command
 - [ ] Remove the old anonymous Jellyfin cache volume (`84b81…`), archive `~/jellyfin.sh`
 - [ ] Remove lxd snap, disable ModemManager/multipathd/wpa_supplicant, apt autoremove — [runbook](docs/runbooks/host-setup.md) step 5
 - [ ] Archive `~/frigate.sh`, `~/go2rtx.sh` and the old fetcher run script
@@ -20,7 +19,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] TradingView alert bot: if it goes public again → NPM access list with TradingView webhook IPs only + a secret in the alert payload
 
 ### Planned
-- [ ] Backups: dedicated 256 GB SATA SSD via USB → restic, nightly systemd timer, documented restore test
+- [ ] Backups: dedicated 256 GB SATA SSD via USB → restic, nightly systemd timer, documented restore test. **On hold**: USB-SATA adapters lost; buy one for 2.5" + 3.5" with its own 12 V power supply. Until then: local `cp -a …bak` before every migration
 - [ ] Compose migration, one stack per PR, least critical first: pinned images, no published ports behind NPM, `no-new-privileges`, no `privileged` (go2rtc)
 - [ ] Self-hosted GitHub Actions runner on the host: deploy changed stacks on merge to `main` (push to `main` only, no PR jobs on the runner)
 - [ ] Renovate for image update PRs (replaces watchtower)
@@ -35,6 +34,9 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-16 – stacks/portainer
+- [x] Portainer 2.45.3 deployed from `dev`: port 8000 closed, 9443 LAN/VPN by IP, data volume reused
 
 ### 2026-11-15 – stacks/jellyfin
 - [x] Jellyfin 12.4 deployed from `dev`: works via LAN IP:8096 and domain; cache in fixed folder; iGPU passed in (not enabled)
