@@ -6,7 +6,8 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
-- [ ] Release: `dev` → `main` (11 commits: jellyfin, teamspeak, portainer, growlog stacks + docs)
+- [ ] Release: `dev` → `main` (PRs #24–#29: teamspeak, portainer, growlog stacks + TASK.md)
+- [ ] GrowLog repo PR #1 (`CLAUDE.md`: deployment via compose in this repo) waiting for merge
 - [ ] Archive old run scripts in `~` (replaced by stacks): `beszel.sh`, `beszel_agent.sh`, `autoheal.sh`, `ddns.sh`, `changedetection.sh`, `sonarr.sh`, `radarr.sh`, `sab.sh`, `frigate.sh`, `go2rtx.sh`, `jellyfin.sh`, `ts6.sh`, `crafty.sh`, `growlog/growlog.sh`, old fetcher script
 - [ ] Scan existing repos (GrowLog, vivosun-fetcher) with gitleaks
 
@@ -31,6 +32,9 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### Releases to `main`
+- [x] #5 repo skeleton, CI, Beszel · #9 autoheal, cloudflare-ddns, SSH with two YubiKeys · #15 changedetection, arr, proxy host review · #19 camera stack, host config · #23 Jellyfin, SMART results
 
 ### 2026-11-16 – compose migration status
 - [x] 10 stacks in the repo (16 containers), no `privileged` containers left
@@ -60,6 +64,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 
 ### 2026-11-13 – stacks/camera
 - [x] go2rtc (no `privileged`, no capabilities), Frigate, vivosun-fetcher (GHCR) deployed from `dev`; live view OK in Frigate + go2rtc
+- [x] vivosun-fetcher in its own repo with CI: `:dev` from `dev`, `:latest` from `main` (fetcher PRs #1, #2), GHCR package public
 - [x] Host ports 1984, 8554, 8556, 8557, 8971, 8555/udp closed; only 8555/tcp (WebRTC) remains
 - [x] GrowView removed (no longer used)
 - [x] `onlyplants` viewer works from outside (5G, PWA)
