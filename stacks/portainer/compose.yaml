@@ -1,0 +1,28 @@
+# Portainer – Docker management UI (LAN/VPN only)
+# CLI equivalent: run.sh (keep both in sync)
+name: portainer
+
+services:
+  portainer:
+    image: portainer/portainer-ee:2.45.3
+    container_name: portainer
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Berlin
+    ports:
+      - "9443:9443"            # HTTPS UI, LAN/VPN only (no router forward, no proxy host)
+      # 8000 (Edge agent tunnel) removed: no Edge agents in use
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock   # full Docker access = root on the host
+      - portainer_data:/data
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  portainer_data:
+    external: true

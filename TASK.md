@@ -6,6 +6,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
+- [ ] Deploy `stacks/portainer` from `dev` (over SSH), archive the old Portainer run command
 - [ ] Remove the old anonymous Jellyfin cache volume (`84b81…`), archive `~/jellyfin.sh`
 - [ ] Remove lxd snap, disable ModemManager/multipathd/wpa_supplicant, apt autoremove — [runbook](docs/runbooks/host-setup.md) step 5
 - [ ] Archive `~/frigate.sh`, `~/go2rtx.sh` and the old fetcher run script
