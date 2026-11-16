@@ -38,7 +38,8 @@ docker run -d --name vivosun-fetcher \
   --network media \
   --env-file .env \
   -e TZ=Europe/Berlin \
-  -e GO2RTC_API_URL=http://go2rtc:1984,http://frigate:1984 \
+  -e GO2RTC_API_URL=http://go2rtc:1984 \
+  -e STREAM_NAME=rtsp-cam \
   --read-only \
   --cap-drop ALL \
   --security-opt no-new-privileges:true \

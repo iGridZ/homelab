@@ -55,11 +55,12 @@ services:
     restart: unless-stopped
     depends_on:
       - go2rtc
-      - frigate
     env_file: .env
     environment:
       TZ: Europe/Berlin
-      GO2RTC_API_URL: http://go2rtc:1984,http://frigate:1984
+      # only go2rtc gets the camera credentials; Frigate pulls the video from go2rtc
+      GO2RTC_API_URL: http://go2rtc:1984
+      STREAM_NAME: rtsp-cam
     read_only: true
     cap_drop:
       - ALL
