@@ -6,7 +6,6 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
-- [ ] Camera: single stream source (fetcher → go2rtc `rtsp-cam` only, `growcam` derived without audio, Frigate pulls from go2rtc) — edit both configs on the host, then redeploy `stacks/camera`
 - [ ] Release: `dev` → `main` (PRs #24–#29: teamspeak, portainer, growlog stacks + TASK.md)
 - [ ] GrowLog repo PR #1 (`CLAUDE.md`: deployment via compose in this repo) waiting for merge
 - [ ] Archive old run scripts in `~` (replaced by stacks): `beszel.sh`, `beszel_agent.sh`, `autoheal.sh`, `ddns.sh`, `changedetection.sh`, `sonarr.sh`, `radarr.sh`, `sab.sh`, `frigate.sh`, `go2rtx.sh`, `jellyfin.sh`, `ts6.sh`, `crafty.sh`, `growlog/growlog.sh`, old fetcher script
@@ -33,6 +32,10 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-16 – camera: single stream source
+- [x] Fetcher writes credentials only into go2rtc (`rtsp-cam`); `growcam` derived without audio; Frigate pulls from go2rtc and holds no camera password
+- [x] Verified: Frigate + go2rtc live, one fetcher log line, recordings without audio
 
 ### Releases to `main`
 - [x] #5 repo skeleton, CI, Beszel · #9 autoheal, cloudflare-ddns, SSH with two YubiKeys · #15 changedetection, arr, proxy host review · #19 camera stack, host config · #23 Jellyfin, SMART results
