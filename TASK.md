@@ -1,32 +1,28 @@
 # TASK.md – homelab
 
-Status: 2026-11-13. Updated after every work session.
+Status: 2026-11-16. Updated after every work session.
 Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model.md](docs/threat-model.md).
 
 ## Open
 
 ### Next up
-- [ ] Remove Crafty: `docker rm -f crafty_container`, later `/docker/crafty` (decision: Crafty goes), archive `~/crafty.sh`
+- [ ] Release: `dev` → `main` (11 commits: jellyfin, teamspeak, portainer, growlog stacks + docs)
+- [ ] Remove Crafty: `docker rm -f crafty_container`, later `/docker/crafty` (decision: Crafty goes)
+- [ ] TeamSpeak: deploy `stacks/teamspeak` from `dev` (verify image digest = beta13.1 first)
+- [ ] Remove the old anonymous Jellyfin cache volume (`84b81…`)
+- [ ] Host step 5: remove lxd snap, disable ModemManager/multipathd/wpa_supplicant, `apt autoremove` — [runbook](docs/runbooks/host-setup.md)
+- [ ] Archive old run scripts in `~` (replaced by stacks): `beszel.sh`, `beszel_agent.sh`, `autoheal.sh`, `ddns.sh`, `changedetection.sh`, `sonarr.sh`, `radarr.sh`, `sab.sh`, `frigate.sh`, `go2rtx.sh`, old fetcher script, `jellyfin.sh`, `ts6.sh`, `crafty.sh`, `growlog/growlog.sh`
+- [ ] Drawer drive: SMART check
+- [ ] Scan existing repos (GrowLog, vivosun-fetcher) with gitleaks
+
+### Remaining migrations
 - [ ] twitch-old-old (kept): stack with digest-pinned image; `run.py` + `cookies/` stay on the host; port 5000 needed?
-- [ ] alert2 (kept): fork upstream `raftheunis87/tradingview-to-telegram-webhook-bot` → own repo, Node 14 → 22, Telegram token/chat id via `.env`, CI `dev`/`latest` to GHCR, then stack; webhook currently not reachable (proxy host removed)
+- [ ] alert2 (kept): fork upstream `raftheunis87/tradingview-to-telegram-webhook-bot` → own repo, Node 14 → 22, Telegram token/chat id via `.env`, CI `dev`/`latest` to GHCR, then stack. Webhook not reachable right now (proxy host removed); if public again: NPM access list with TradingView webhook IPs + secret in the alert payload
+- [ ] GrowLog: deploy `stacks/growlog` when it is used again (backup `/docker/data/growlog` first)
 - [ ] After backup adapter: Vaultwarden + NPM stacks
-- [ ] Deploy `stacks/growlog` from `dev` when GrowLog is used again (backup `/docker/data/growlog` first), archive `~/growlog/growlog.sh`
-- [ ] Deploy `stacks/portainer` from `dev` (over SSH), archive the old Portainer run command
-- [ ] Remove the old anonymous Jellyfin cache volume (`84b81…`), archive `~/jellyfin.sh`
-- [ ] Remove lxd snap, disable ModemManager/multipathd/wpa_supplicant, apt autoremove — [runbook](docs/runbooks/host-setup.md) step 5
-- [ ] Archive `~/frigate.sh`, `~/go2rtx.sh` and the old fetcher run script
-- [ ] Archive `~/sonarr.sh`, `~/radarr.sh`, `~/sab.sh`
-- [ ] Archive `~/autoheal.sh` and `~/ddns.sh` (replaced by stacks)
-- [ ] Archive `~/beszel.sh` and `~/beszel_agent.sh` (replaced by `stacks/beszel`)
-- [ ] Drawer drive: SMART check still to do
-- [ ] Scan existing repos (GrowLog, GrowView) with gitleaks
-- [ ] TeamSpeak: deploy `stacks/teamspeak` from `dev` (verify image digest = beta13.1 first), archive `~/ts6.sh`
-- [ ] Archive `~/changedetection.sh`
-- [ ] TradingView alert bot: if it goes public again → NPM access list with TradingView webhook IPs only + a secret in the alert payload
 
 ### Planned
 - [ ] Backups: dedicated 256 GB SATA SSD via USB → restic, nightly systemd timer, documented restore test. **On hold**: USB-SATA adapters lost; buy one for 2.5" + 3.5" with its own 12 V power supply. Until then: local `cp -a …bak` before every migration
-- [ ] Compose migration, one stack per PR, least critical first: pinned images, no published ports behind NPM, `no-new-privileges`, no `privileged` (go2rtc)
 - [ ] Self-hosted GitHub Actions runner on the host: deploy changed stacks on merge to `main` (push to `main` only, no PR jobs on the runner)
 - [ ] Renovate for image update PRs (replaces watchtower)
 - [ ] Plan Ubuntu 22.04 → 24.04 (standard support ends 2027-04)
@@ -41,6 +37,10 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-16 – compose migration status
+- [x] 10 stacks in the repo (16 containers), no `privileged` containers left
+- [x] Crafty: decision to remove; twitch-old-old and alert2: decision to keep
 
 ### 2026-11-16 – stacks/portainer
 - [x] Portainer 2.45.3 deployed from `dev`: port 8000 closed, 9443 LAN/VPN by IP, data volume reused
