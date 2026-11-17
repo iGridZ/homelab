@@ -7,7 +7,6 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 
 ### Next up
 - [ ] Home folder leftovers: old Bitwarden install `~/bwdata` (check, then delete once Vaultwarden is confirmed complete), `setup.sh` (unknown), old SABnzbd backup zip, inventory output
-- [ ] Release: `dev` → `main` (PRs #24–#29: teamspeak, portainer, growlog stacks + TASK.md)
 - [ ] GrowLog repo PR #1 (`CLAUDE.md`: deployment via compose in this repo) waiting for merge
 - [ ] GitHub: *Settings → Emails* → "Keep my email addresses private" + "Block command line pushes that expose my email"; local `git config --global user.email "88323457+iGridZ@users.noreply.github.com"`
 
@@ -52,7 +51,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [x] Verified: Frigate + go2rtc live, one fetcher log line, recordings without audio
 
 ### Releases to `main`
-- [x] #5 repo skeleton, CI, Beszel · #9 autoheal, cloudflare-ddns, SSH with two YubiKeys · #15 changedetection, arr, proxy host review · #19 camera stack, host config · #23 Jellyfin, SMART results
+- [x] #5 repo skeleton, CI, Beszel · #9 autoheal, cloudflare-ddns, SSH with two YubiKeys · #15 changedetection, arr, proxy host review · #19 camera stack, host config · #23 Jellyfin, SMART results · #35 teamspeak, portainer, growlog stacks, camera single source, Radarr 7
 
 ### 2026-11-16 – compose migration status
 - [x] 10 stacks in the repo (16 containers), no `privileged` containers left
