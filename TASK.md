@@ -9,7 +9,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Release: `dev` → `main` (PRs #24–#29: teamspeak, portainer, growlog stacks + TASK.md)
 - [ ] GrowLog repo PR #1 (`CLAUDE.md`: deployment via compose in this repo) waiting for merge
 - [ ] Archive old run scripts in `~` (replaced by stacks): `beszel.sh`, `beszel_agent.sh`, `autoheal.sh`, `ddns.sh`, `changedetection.sh`, `sonarr.sh`, `radarr.sh`, `sab.sh`, `frigate.sh`, `go2rtx.sh`, `jellyfin.sh`, `ts6.sh`, `crafty.sh`, `growlog/growlog.sh`, old fetcher script
-- [ ] Scan existing repos (GrowLog, vivosun-fetcher) with gitleaks
+- [ ] GitHub: *Settings → Emails* → "Keep my email addresses private" + "Block command line pushes that expose my email"; local `git config --global user.email "88323457+iGridZ@users.noreply.github.com"`
 
 ### Remaining migrations
 - [ ] twitch-old-old (kept): stack with digest-pinned image; `run.py` + `cookies/` stay on the host; port 5000 needed?
@@ -33,6 +33,11 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-17 – secret scan
+- [x] gitleaks (full history) on homelab, growlog, vivosun-fetcher: no leaks
+- [x] Manual search for camera credentials, domains, public IP, Vivosun/Telegram secrets: none in any repo
+- [x] Only finding: personal Gmail address in commit author metadata of all three public repos
 
 ### 2026-11-17 – radarr 7
 - [x] Radarr 6.4.4 → 7.0.3.10918 (stable, not nightly): config backed up first, DB migration 243 ok, search → SABnzbd works
