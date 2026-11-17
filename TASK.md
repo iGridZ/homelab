@@ -6,9 +6,9 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
+- [ ] Home folder leftovers: old Bitwarden install `~/bwdata` (check, then delete once Vaultwarden is confirmed complete), `setup.sh` (unknown), old SABnzbd backup zip, inventory output
 - [ ] Release: `dev` → `main` (PRs #24–#29: teamspeak, portainer, growlog stacks + TASK.md)
 - [ ] GrowLog repo PR #1 (`CLAUDE.md`: deployment via compose in this repo) waiting for merge
-- [ ] Archive old run scripts in `~` (replaced by stacks): `beszel.sh`, `beszel_agent.sh`, `autoheal.sh`, `ddns.sh`, `changedetection.sh`, `sonarr.sh`, `radarr.sh`, `sab.sh`, `frigate.sh`, `go2rtx.sh`, `jellyfin.sh`, `ts6.sh`, `crafty.sh`, `growlog/growlog.sh`, old fetcher script
 - [ ] GitHub: *Settings → Emails* → "Keep my email addresses private" + "Block command line pushes that expose my email"; local `git config --global user.email "88323457+iGridZ@users.noreply.github.com"`
 
 ### Remaining migrations
@@ -33,6 +33,9 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-17 – home folder
+- [x] Old run scripts archived to `~/archive`; only `npm.sh`, `twitch.sh`, `vaultwarden.sh` remain (not migrated yet)
 
 ### 2026-11-17 – secret scan
 - [x] gitleaks (full history) on homelab, growlog, vivosun-fetcher: no leaks
