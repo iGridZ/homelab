@@ -18,7 +18,7 @@ docker run -d --name radarr "${COMMON[@]}" -e UMASK=002 \
   -v /docker/configs/radarr:/config \
   -v /media/share:/data \
   -v /home/rock/downloads:/downloads \
-  ghcr.io/hotio/radarr:release-6.4.4.10685
+  ghcr.io/hotio/radarr:release-7.0.3.10918
 
 docker run -d --name sabnzbd "${COMMON[@]}" \
   -v /docker/configs/sabnzbd:/config \

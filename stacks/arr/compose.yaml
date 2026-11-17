@@ -44,7 +44,7 @@ services:
       UMASK: "002"
     volumes:
       - /docker/configs/radarr:/config
-      - /media/share:/data:ro
+      - /media/share:/data
       - /home/rock/downloads:/downloads
 
   sabnzbd:
