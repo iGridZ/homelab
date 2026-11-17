@@ -17,6 +17,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] After backup adapter: Vaultwarden + NPM stacks
 
 ### Planned
+- [ ] Delete `/docker/configs/radarr.bak-6.4.4` after a few days without problems
 - [ ] Backups: dedicated 256 GB SATA SSD via USB → restic, nightly systemd timer, documented restore test. **On hold**: USB-SATA adapters lost; buy one for 2.5" + 3.5" with its own 12 V power supply. Until then: local `cp -a …bak` before every migration
 - [ ] Self-hosted GitHub Actions runner on the host: deploy changed stacks on merge to `main` (push to `main` only, no PR jobs on the runner)
 - [ ] Renovate for image update PRs (replaces watchtower)
@@ -32,6 +33,11 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-17 – radarr 7
+- [x] Radarr 6.4.4 → 7.0.3.10918 (stable, not nightly): config backed up first, DB migration 243 ok, search → SABnzbd works
+- [x] Radarr *Allowed Hosts* set (domain, container name, localhost)
+- [x] CI now also runs on `chore/`, `fix/`, `docs/`, `ci/` branches
 
 ### 2026-11-16 – camera: single stream source
 - [x] Fetcher writes credentials only into go2rtc (`rtsp-cam`); `growcam` derived without audio; Frigate pulls from go2rtc and holds no camera password

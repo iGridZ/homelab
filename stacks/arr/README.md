@@ -20,6 +20,20 @@ Media automation: [Sonarr](https://sonarr.tv) (series), [Radarr](https://radarr.
 - One timezone for all three (`Europe/Berlin`); before the migration they used three
   different ones.
 
+## Updates
+
+Major updates (e.g. Radarr 6 → 7) run one-way database migrations:
+
+1. Branch `chore/<app>-<version>`, change the tag in `compose.yaml` **and** `run.sh`
+2. PR → `dev`, read the changelog (breaking changes, API changes)
+3. Backup: *System → Backup → Backup Now* and `sudo cp -a /docker/configs/<app> /docker/configs/<app>.bak-<old-version>`
+4. `docker compose pull <app> && docker compose up -d <app>`, watch `docker logs -f <app>` until the migration is done
+5. Check UI, download client + indexer tests, one search, API consumers (StaxRip script)
+6. Rollback: stop, restore the `.bak` folder, old tag, `up -d`
+
+Use release tags only, never `nightly`/`testing`. Radarr 7+ also wants *Allowed Hosts*
+(Settings → General → Host): `<app>.<domain>, <app>, localhost`.
+
 ## Deploy
 
 ```bash
