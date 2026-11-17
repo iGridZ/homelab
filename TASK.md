@@ -1,32 +1,31 @@
 # TASK.md – homelab
 
-Status: 2026-11-13. Updated after every work session.
+Status: 2026-11-16. Updated after every work session.
 Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model.md](docs/threat-model.md).
 
 ## Open
 
 ### Next up
-- [ ] Remove the old anonymous Jellyfin cache volume (`84b81…`), archive `~/jellyfin.sh`
-- [ ] Remove lxd snap, disable ModemManager/multipathd/wpa_supplicant, apt autoremove — [runbook](docs/runbooks/host-setup.md) step 5
-- [ ] Archive `~/frigate.sh`, `~/go2rtx.sh` and the old fetcher run script
-- [ ] Archive `~/sonarr.sh`, `~/radarr.sh`, `~/sab.sh`
-- [ ] Archive `~/autoheal.sh` and `~/ddns.sh` (replaced by stacks)
-- [ ] Archive `~/beszel.sh` and `~/beszel_agent.sh` (replaced by `stacks/beszel`)
-- [ ] Drawer drive: SMART check still to do
-- [ ] Scan existing repos (GrowLog, GrowView) with gitleaks
-- [ ] TeamSpeak: currently stopped on purpose (Erik starts it later); restart policy is `no` → `unless-stopped`
-- [ ] Archive `~/changedetection.sh`
-- [ ] TradingView alert bot: if it goes public again → NPM access list with TradingView webhook IPs only + a secret in the alert payload
+- [ ] Release: `dev` → `main` (PRs #24–#29: teamspeak, portainer, growlog stacks + TASK.md)
+- [ ] GrowLog repo PR #1 (`CLAUDE.md`: deployment via compose in this repo) waiting for merge
+- [ ] Archive old run scripts in `~` (replaced by stacks): `beszel.sh`, `beszel_agent.sh`, `autoheal.sh`, `ddns.sh`, `changedetection.sh`, `sonarr.sh`, `radarr.sh`, `sab.sh`, `frigate.sh`, `go2rtx.sh`, `jellyfin.sh`, `ts6.sh`, `crafty.sh`, `growlog/growlog.sh`, old fetcher script
+- [ ] Scan existing repos (GrowLog, vivosun-fetcher) with gitleaks
+
+### Remaining migrations
+- [ ] twitch-old-old (kept): stack with digest-pinned image; `run.py` + `cookies/` stay on the host; port 5000 needed?
+- [ ] alert2 (kept): fork upstream `raftheunis87/tradingview-to-telegram-webhook-bot` → own repo, Node 14 → 22, Telegram token/chat id via `.env`, CI `dev`/`latest` to GHCR, then stack. Webhook not reachable right now (proxy host removed); if public again: NPM access list with TradingView webhook IPs + secret in the alert payload
+- [ ] After backup adapter: Vaultwarden + NPM stacks
 
 ### Planned
-- [ ] Backups: dedicated 256 GB SATA SSD via USB → restic, nightly systemd timer, documented restore test
-- [ ] Compose migration, one stack per PR, least critical first: pinned images, no published ports behind NPM, `no-new-privileges`, no `privileged` (go2rtc)
+- [ ] Delete `/docker/configs/radarr.bak-6.4.4` after a few days without problems
+- [ ] Backups: dedicated 256 GB SATA SSD via USB → restic, nightly systemd timer, documented restore test. **On hold**: USB-SATA adapters lost; buy one for 2.5" + 3.5" with its own 12 V power supply. Until then: local `cp -a …bak` before every migration
 - [ ] Self-hosted GitHub Actions runner on the host: deploy changed stacks on merge to `main` (push to `main` only, no PR jobs on the runner)
 - [ ] Renovate for image update PRs (replaces watchtower)
 - [ ] Plan Ubuntu 22.04 → 24.04 (standard support ends 2027-04)
 - [ ] Frigate: ~27 % CPU is likely object detection (decoding already on the iGPU) → check detector, detect fps/resolution
 
 ### Ideas (not decided)
+- [ ] GrowLog CI: also build a `:dev` image (currently only `:latest` from `main`)
 - [ ] Jellyfin VAAPI: video transcoding is disabled per user (clients decode HEVC), only remux/audio transcoding is used; VAAPI would still speed up trickplay/thumbnail extraction
 - [ ] `sudo` with YubiKey touch (pam-u2f)
 - [ ] CrowdSec on the NPM logs
@@ -34,6 +33,30 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-17 – radarr 7
+- [x] Radarr 6.4.4 → 7.0.3.10918 (stable, not nightly): config backed up first, DB migration 243 ok, search → SABnzbd works
+- [x] Radarr *Allowed Hosts* set (domain, container name, localhost)
+- [x] CI now also runs on `chore/`, `fix/`, `docs/`, `ci/` branches
+
+### 2026-11-16 – camera: single stream source
+- [x] Fetcher writes credentials only into go2rtc (`rtsp-cam`); `growcam` derived without audio; Frigate pulls from go2rtc and holds no camera password
+- [x] Verified: Frigate + go2rtc live, one fetcher log line, recordings without audio
+
+### Releases to `main`
+- [x] #5 repo skeleton, CI, Beszel · #9 autoheal, cloudflare-ddns, SSH with two YubiKeys · #15 changedetection, arr, proxy host review · #19 camera stack, host config · #23 Jellyfin, SMART results
+
+### 2026-11-16 – compose migration status
+- [x] 10 stacks in the repo (16 containers), no `privileged` containers left
+- [x] Crafty removed; twitch-old-old and alert2 kept (decision)
+- [x] TeamSpeak re-created from `stacks/teamspeak` (not started)
+- [x] GrowLog running from `stacks/growlog`
+- [x] Old anonymous Jellyfin cache volume removed
+- [x] Host step 5: lxd snap removed, unused services disabled
+- [x] Drawer drive SMART check done
+
+### 2026-11-16 – stacks/portainer
+- [x] Portainer 2.45.3 deployed from `dev`: port 8000 closed, 9443 LAN/VPN by IP, data volume reused
 
 ### 2026-11-15 – stacks/jellyfin
 - [x] Jellyfin 12.4 deployed from `dev`: works via LAN IP:8096 and domain; cache in fixed folder; iGPU passed in (not enabled)
@@ -51,6 +74,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 
 ### 2026-11-13 – stacks/camera
 - [x] go2rtc (no `privileged`, no capabilities), Frigate, vivosun-fetcher (GHCR) deployed from `dev`; live view OK in Frigate + go2rtc
+- [x] vivosun-fetcher in its own repo with CI: `:dev` from `dev`, `:latest` from `main` (fetcher PRs #1, #2), GHCR package public
 - [x] Host ports 1984, 8554, 8556, 8557, 8971, 8555/udp closed; only 8555/tcp (WebRTC) remains
 - [x] GrowView removed (no longer used)
 - [x] `onlyplants` viewer works from outside (5G, PWA)

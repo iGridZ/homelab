@@ -57,16 +57,16 @@ flowchart LR
 | Service | Purpose | Access |
 |---|---|---|
 | Nginx Proxy Manager | Reverse proxy, Let's Encrypt certificates | Public :443 · admin UI LAN/VPN |
-| Portainer | Docker management UI | LAN/VPN |
+| Portainer | Docker management UI ([stack](stacks/portainer)) | LAN/VPN |
 | Jellyfin | Media server ([stack](stacks/jellyfin)) | Public via NPM · LAN :8096 |
 | Vaultwarden | Password manager (Bitwarden-compatible) | Public via NPM |
 | Sonarr / Radarr / SABnzbd | Media automation ([stack](stacks/arr)) | Via NPM, app login |
 | Frigate + go2rtc | NVR / camera streaming (grow tent cam) ([stack](stacks/camera)) | Frigate via NPM (login) · viewer path-filtered |
-| GrowLog | My own grow-journal web app ([repo](https://github.com/iGridZ/Growlog)) | Public via NPM |
+| GrowLog | My own grow-journal web app ([repo](https://github.com/iGridZ/Growlog), [stack](stacks/growlog)) | Public via NPM |
 | vivosun-fetcher | Feeds camera credentials into go2rtc ([own repo](https://github.com/iGridZ/vivosun-fetcher)) | Internal |
 | changedetection.io | Website change monitoring ([stack](stacks/changedetection)) | LAN/VPN |
 | Crafty | Minecraft server controller | LAN/VPN |
-| TeamSpeak 6 | Voice server | Public (direct port forward) |
+| TeamSpeak 6 | Voice server ([stack](stacks/teamspeak)) | Public (direct port forward) |
 | Beszel + agent | Lightweight host/container monitoring ([stack](stacks/beszel)) | LAN |
 | cloudflare-ddns | Keeps DNS records pointed at the home IP ([stack](stacks/cloudflare-ddns)) | Internal |
 | autoheal | Restarts unhealthy containers ([stack](stacks/autoheal)) | Internal |

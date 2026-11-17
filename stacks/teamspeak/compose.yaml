@@ -1,0 +1,32 @@
+# TeamSpeak 6 server
+# CLI equivalent: run.sh (keep both in sync)
+name: teamspeak
+
+services:
+  teamspeak:
+    image: teamspeaksystems/teamspeak6-server:6.0.0-beta13.1
+    container_name: teamspeak-server
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Berlin
+      TSSERVER_LICENSE_ACCEPTED: accept
+    ports:
+      - "42069:9987/udp"       # voice (router forward)
+      - "30033:30033/tcp"      # file transfer (router forward)
+    volumes:
+      - teamspeak-data:/var/tsserver
+    # the image already runs as the unprivileged user "teamspeak"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# existing volume from the old docker-run setup (server identity, channels, permissions)
+volumes:
+  teamspeak-data:
+    external: true

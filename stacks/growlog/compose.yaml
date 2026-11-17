@@ -1,0 +1,32 @@
+# GrowLog – my own grow journal web app (image built by github.com/iGridZ/growlog)
+# CLI equivalent: run.sh (keep both in sync)
+name: growlog
+
+services:
+  growlog:
+    image: ghcr.io/igridz/growlog:latest   # own image, :latest = main branch
+    container_name: growlog
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Berlin
+    # No published port: NPM proxies http://growlog:8087 by name
+    volumes:
+      - /docker/data/growlog:/data         # SQLite database
+    networks:
+      - media
+    read_only: true
+    tmpfs:
+      - /tmp                               # gunicorn worker heartbeat files
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  media:
+    external: true
