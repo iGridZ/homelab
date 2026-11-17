@@ -6,7 +6,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
-- [ ] Home folder leftovers: old Bitwarden install `~/bwdata` (check, then delete once Vaultwarden is confirmed complete), `setup.sh` (unknown), old SABnzbd backup zip, inventory output
+- [ ] Home folder leftovers: old Bitwarden install `~/bwdata` (check, then delete once Vaultwarden is confirmed complete), `setup.sh` (unknown)
 - [ ] GrowLog repo PR #1 (`CLAUDE.md`: deployment via compose in this repo) waiting for merge
 - [ ] GitHub: *Settings → Emails* → "Keep my email addresses private" + "Block command line pushes that expose my email"; local `git config --global user.email "88323457+iGridZ@users.noreply.github.com"`
 
@@ -35,6 +35,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 
 ### 2026-11-17 – home folder
 - [x] Old run scripts archived to `~/archive`; only `npm.sh`, `twitch.sh`, `vaultwarden.sh` remain (not migrated yet)
+- [x] Removed: old inventory script + output, `~/fetcher` (now on GitHub), SABnzbd backup zip from 2024
 
 ### 2026-11-17 – secret scan
 - [x] gitleaks (full history) on homelab, growlog, vivosun-fetcher: no leaks
