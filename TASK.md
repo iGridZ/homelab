@@ -9,8 +9,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Deploy `stacks/torrent` (gluetun + qBittorrent 5.2.3 libtorrent v1 + mousehole) from `dev`: NAS folder `media/mam` + fstab mount, Proton WireGuard key with NAT-PMP, verify VPN IP + forwarded port, MAM connectable
 - [ ] Release: `dev` → `main` (PRs #24–#29: teamspeak, portainer, growlog stacks + TASK.md)
 - [ ] GrowLog repo PR #1 (`CLAUDE.md`: deployment via compose in this repo) waiting for merge
-- [ ] Archive old run scripts in `~` (replaced by stacks): `beszel.sh`, `beszel_agent.sh`, `autoheal.sh`, `ddns.sh`, `changedetection.sh`, `sonarr.sh`, `radarr.sh`, `sab.sh`, `frigate.sh`, `go2rtx.sh`, `jellyfin.sh`, `ts6.sh`, `crafty.sh`, `growlog/growlog.sh`, old fetcher script
-- [ ] Scan existing repos (GrowLog, vivosun-fetcher) with gitleaks
+- [ ] GitHub: *Settings → Emails* → "Keep my email addresses private" + "Block command line pushes that expose my email"; local `git config --global user.email "88323457+iGridZ@users.noreply.github.com"`
 
 ### Remaining migrations
 - [ ] twitch-old-old (kept): stack with digest-pinned image; `run.py` + `cookies/` stay on the host; port 5000 needed?
@@ -35,6 +34,16 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 
 ## Done
 
+### 2026-11-17 – home folder
+- [x] Old run scripts archived to `~/archive`; only `npm.sh`, `twitch.sh`, `vaultwarden.sh` remain (not migrated yet)
+- [x] Removed: old inventory script + output, `~/fetcher` (now on GitHub), SABnzbd backup zip from 2024, old Bitwarden install `~/bwdata`, `~/twds`
+- [x] Old fetcher `setup.sh` archived; `~/.env` + `~/.env.save` (Vivosun login, world-readable) deleted; all stack `.env` files are `600`
+
+### 2026-11-17 – secret scan
+- [x] gitleaks (full history) on homelab, growlog, vivosun-fetcher: no leaks
+- [x] Manual search for camera credentials, domains, public IP, Vivosun/Telegram secrets: none in any repo
+- [x] Only finding: personal Gmail address in commit author metadata of all three public repos
+
 ### 2026-11-17 – radarr 7
 - [x] Radarr 6.4.4 → 7.0.3.10918 (stable, not nightly): config backed up first, DB migration 243 ok, search → SABnzbd works
 - [x] Radarr *Allowed Hosts* set (domain, container name, localhost)
@@ -45,7 +54,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [x] Verified: Frigate + go2rtc live, one fetcher log line, recordings without audio
 
 ### Releases to `main`
-- [x] #5 repo skeleton, CI, Beszel · #9 autoheal, cloudflare-ddns, SSH with two YubiKeys · #15 changedetection, arr, proxy host review · #19 camera stack, host config · #23 Jellyfin, SMART results
+- [x] #5 repo skeleton, CI, Beszel · #9 autoheal, cloudflare-ddns, SSH with two YubiKeys · #15 changedetection, arr, proxy host review · #19 camera stack, host config · #23 Jellyfin, SMART results · #35 teamspeak, portainer, growlog stacks, camera single source, Radarr 7
 
 ### 2026-11-16 – compose migration status
 - [x] 10 stacks in the repo (16 containers), no `privileged` containers left
