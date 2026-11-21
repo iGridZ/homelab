@@ -61,7 +61,7 @@ placeholders `<domain>` (main domain) and `<media-domain>` (Jellyfin).
 | `mon.<domain>` | `http://beszel:8090` | Public | Beszel login |
 | `onlyplants.<domain>` | `http://go2rtc:1984` | Public, **path-filtered** | Only the `growcam` viewer is reachable, see below |
 
-Not proxied (LAN/VPN only): Portainer, NPM admin, changedetection, Crafty, TradingView alert bot.
+Not proxied (LAN/VPN only): qBittorrent (`:8085`), mousehole (`:5010`), Portainer, NPM admin, changedetection, TradingView alert bot.
 
 ### onlyplants: public camera viewer without exposing go2rtc
 
