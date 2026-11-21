@@ -11,10 +11,10 @@ set -a; . ./.env; set +a
 LOG_OPTS=(--log-driver json-file --log-opt max-size=10m --log-opt max-file=3)
 
 read -r -d '' UP_CMD <<'CMD' || true
-/bin/sh -c 'wget -O- -nv --retry-connrefused --post-data "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"{{VPN_INTERFACE}}\",\"random_port\":false,\"upnp\":false}" http://127.0.0.1:8080/api/v2/app/setPreferences'
+/bin/sh -c 'wget -O- -nv --retry-connrefused --post-data "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"{{VPN_INTERFACE}}\",\"random_port\":false,\"upnp\":false}" http://127.0.0.1:8085/api/v2/app/setPreferences'
 CMD
 read -r -d '' DOWN_CMD <<'CMD' || true
-/bin/sh -c 'wget -O- -nv --retry-connrefused --post-data "json={\"listen_port\":0,\"current_network_interface\":\"lo\"}" http://127.0.0.1:8080/api/v2/app/setPreferences'
+/bin/sh -c 'wget -O- -nv --retry-connrefused --post-data "json={\"listen_port\":0,\"current_network_interface\":\"lo\"}" http://127.0.0.1:8085/api/v2/app/setPreferences'
 CMD
 
 docker rm -f mousehole qbittorrent gluetun >/dev/null 2>&1 || true
@@ -33,7 +33,7 @@ docker run -d --name gluetun \
   -e VPN_PORT_FORWARDING=on \
   -e VPN_PORT_FORWARDING_UP_COMMAND="$UP_CMD" \
   -e VPN_PORT_FORWARDING_DOWN_COMMAND="$DOWN_CMD" \
-  -p 8085:8080 \
+  -p 8085:8085 \
   -p 5010:5010 \
   -v /docker/configs/gluetun:/gluetun \
   "${LOG_OPTS[@]}" \
@@ -45,7 +45,7 @@ until [ "$(docker inspect -f '{{.State.Health.Status}}' gluetun)" = "healthy" ];
 docker run -d --name qbittorrent \
   --restart unless-stopped \
   --network container:gluetun \
-  -e TZ=Europe/Berlin -e PUID=1000 -e PGID=1000 -e WEBUI_PORT=8080 \
+  -e TZ=Europe/Berlin -e PUID=1000 -e PGID=1000 -e WEBUI_PORT=8085 \
   -v /docker/configs/qbittorrent:/config \
   -v /media/share/mam:/data/mam \
   --security-opt no-new-privileges:true \
