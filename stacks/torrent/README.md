@@ -39,6 +39,10 @@ flowchart LR
   interface. On reconnect the new port is set automatically.
 - **No leaks.** If the VPN is down, gluetun's firewall blocks all traffic.
 - **libtorrent v1:** lower RAM use and more reliable when seeding from NFS than v2.
+- **Web UI port 8085 on both sides.** qBittorrent's CSRF check compares the browser's
+  port with its own; a mapping like `8085:8080` answers every request with
+  `Unauthorized`. `WEBUI_PORT`, the port mapping and the gluetun up/down command
+  must all use the same port.
 
 ## First setup
 
