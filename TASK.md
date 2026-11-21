@@ -6,7 +6,8 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
-- [ ] `~/.git-credentials`: GitHub token in plain text (credential helper `store`). Public repos need no token to pull → remove helper + file, revoke the token; for pushes from the host use a fine-grained token or SSH key
+- [ ] Deploy `stacks/torrent` (gluetun + qBittorrent 5.2.3 libtorrent v1 + mousehole) from `dev`: NAS folder `media/mam` + fstab mount, Proton WireGuard key with NAT-PMP, verify VPN IP + forwarded port, MAM connectable
+- [ ] Release: `dev` → `main` (PRs #24–#29: teamspeak, portainer, growlog stacks + TASK.md)
 - [ ] GrowLog repo PR #1 (`CLAUDE.md`: deployment via compose in this repo) waiting for merge
 - [ ] GitHub: *Settings → Emails* → "Keep my email addresses private" + "Block command line pushes that expose my email"; local `git config --global user.email "88323457+iGridZ@users.noreply.github.com"`
 
