@@ -73,6 +73,8 @@ services:
     environment:
       TZ: Europe/Berlin
       MOUSEHOLE_AUTH_PASSWORD: ${MOUSEHOLE_AUTH_PASSWORD:?set MOUSEHOLE_AUTH_PASSWORD in .env}
+      # Host header allowlist; default is only localhost. Reached by LAN IP (also over WireGuard).
+      MOUSEHOLE_ALLOWED_HOSTS: "localhost,127.0.0.1,[::1],192.168.1.245,192.168.1.245:5010"
     volumes:
       - mousehole:/var/lib/mousehole       # MAM cookie survives restarts
     security_opt:

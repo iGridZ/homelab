@@ -43,6 +43,9 @@ flowchart LR
   port with its own; a mapping like `8085:8080` answers every request with
   `Unauthorized`. `WEBUI_PORT`, the port mapping and the gluetun up/down command
   must all use the same port.
+- **mousehole Host allowlist.** mousehole only answers requests whose `Host` header
+  is in `MOUSEHOLE_ALLOWED_HOSTS` (default: localhost). The LAN IP is added so the
+  UI works at `192.168.1.245:5010`.
 
 ## First setup
 
