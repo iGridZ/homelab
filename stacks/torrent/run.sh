@@ -57,6 +57,7 @@ docker run -d --name mousehole \
   --network container:gluetun \
   -e TZ=Europe/Berlin \
   -e MOUSEHOLE_AUTH_PASSWORD="$MOUSEHOLE_AUTH_PASSWORD" \
+  -e MOUSEHOLE_ALLOWED_HOSTS="localhost,127.0.0.1,[::1],192.168.1.245,192.168.1.245:5010" \
   -v mousehole:/var/lib/mousehole \
   --security-opt no-new-privileges:true \
   "${LOG_OPTS[@]}" \
