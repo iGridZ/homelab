@@ -6,9 +6,8 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
-- [ ] Deploy Frigate removal: `docker compose up -d --remove-orphans`; Erik: delete NPM host `frigate.<domain>` + DNS record, then `/docker/config/frigate` + `/home/rock/media`
-- [ ] `~/.git-credentials`: remove credential helper + file, revoke the token on GitHub
-- [ ] GitHub: *Settings → Emails* → "Keep my email addresses private" + "Block command line pushes that expose my email"; local `git config --global user.email "88323457+iGridZ@users.noreply.github.com"`
+- [ ] Release: `dev` → `main` (PRs #42–#43: Frigate removal, TASK.md)
+- [ ] Self-hosted GitHub Actions runner on rock (see Planned)
 
 ### Remaining migrations
 - [ ] twitch-old-old (kept): stack with digest-pinned image; `run.py` + `cookies/` stay on the host; port 5000 stays (only twitch uses it)
@@ -35,7 +34,9 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [x] Release #41 (`dev` → `main`): torrent stack
 - [x] GrowLog repo PR #1 merged
 - [x] `/docker/configs/radarr.bak-6.4.4` deleted
-- [x] Frigate removed from camera stack in the repo (compose, run.sh, docs); go2rtc stays as viewer
+- [x] Frigate removed (PR #42): deployed with `--remove-orphans`, NPM host + DNS record + data deleted; go2rtc stays as viewer
+- [x] `~/.git-credentials` + credential helper removed, token revoked
+- [x] GitHub email private, push protection on, git `user.email` = noreply address
 
 ### 2026-11-23 – torrent stack (PRs #37–#39)
 - [x] `stacks/torrent` deployed from `dev`: gluetun (ProtonVPN WireGuard, NAT-PMP port forward), qBittorrent 5.2.3 libtorrent v1, mousehole; NAS `media/mam` mounted at `/media/share/mam`
