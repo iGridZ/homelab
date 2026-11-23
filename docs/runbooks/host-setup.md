@@ -57,9 +57,8 @@ sudo apt autoremove -y
 | `docker info --format '{{.LiveRestoreEnabled}}'` | `true` |
 | `swapon --show` | `zram0` priority 100 |
 | `sudo sshd -T \| grep passwordauthentication` | `no` |
-| `docker logs frigate 2>&1 \| grep hwaccel` | `Automatically detected vaapi hwaccel` |
 
 ## Hardware notes
 
 - iGPU: AMD Radeon R7E (Carrizo), Mesa radeonsi VA-API driver. Hardware decode for
-  H.264 and HEVC Main (`vainfo`), used automatically by Frigate.
+  H.264 and HEVC Main (`vainfo`).

@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 [ -f .env ] || { echo "Missing .env - copy .env.example and fill it in" >&2; exit 1; }
 LOG_OPTS=(--log-driver json-file --log-opt max-size=10m --log-opt max-file=3)
 
-docker rm -f vivosun-fetcher frigate go2rtc >/dev/null 2>&1 || true
+docker rm -f vivosun-fetcher go2rtc >/dev/null 2>&1 || true
 
 docker run -d --name go2rtc \
   --restart unless-stopped \
@@ -18,20 +18,6 @@ docker run -d --name go2rtc \
   -v /docker/config/go2rtc:/config \
   "${LOG_OPTS[@]}" \
   alexxit/go2rtc:1.9.15
-
-docker run -d --name frigate \
-  --restart unless-stopped \
-  --network media \
-  --shm-size 256m \
-  --device /dev/bus/usb:/dev/bus/usb \
-  --device /dev/dri/renderD128:/dev/dri/renderD128 \
-  --security-opt no-new-privileges:true \
-  -v /docker/config/frigate:/config \
-  -v /home/rock/media:/media/frigate \
-  -v /etc/localtime:/etc/localtime:ro \
-  --tmpfs /tmp/cache \
-  "${LOG_OPTS[@]}" \
-  ghcr.io/blakeblackshear/frigate:0.18.2
 
 docker run -d --name vivosun-fetcher \
   --restart unless-stopped \

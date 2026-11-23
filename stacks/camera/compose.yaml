@@ -1,4 +1,4 @@
-# Camera stack: go2rtc (streaming), Frigate (NVR), vivosun-fetcher (camera credentials)
+# Camera stack: go2rtc (streaming + viewer), vivosun-fetcher (camera credentials)
 # CLI equivalent: run.sh (keep both in sync)
 name: camera
 
@@ -28,27 +28,6 @@ services:
       - media
     logging: *logging
 
-  frigate:
-    image: ghcr.io/blakeblackshear/frigate:0.18.2
-    container_name: frigate
-    restart: unless-stopped
-    shm_size: "256mb"
-    devices:
-      - /dev/bus/usb:/dev/bus/usb
-      - /dev/dri/renderD128:/dev/dri/renderD128   # iGPU for hardware video decoding
-    security_opt:
-      - no-new-privileges:true
-    volumes:
-      - /docker/config/frigate:/config
-      - /home/rock/media:/media/frigate
-      - /etc/localtime:/etc/localtime:ro
-    tmpfs:
-      - /tmp/cache
-    # No published ports: NPM proxies https://frigate:8971 by name
-    networks:
-      - media
-    logging: *logging
-
   vivosun-fetcher:
     image: ghcr.io/igridz/vivosun-fetcher:latest   # own image, built by its repo's CI
     container_name: vivosun-fetcher
@@ -58,7 +37,7 @@ services:
     env_file: .env
     environment:
       TZ: Europe/Berlin
-      # only go2rtc gets the camera credentials; Frigate pulls the video from go2rtc
+      # only go2rtc gets the camera credentials
       GO2RTC_API_URL: http://go2rtc:1984
       STREAM_NAME: rtsp-cam
     read_only: true
