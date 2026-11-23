@@ -1,13 +1,14 @@
 # TASK.md – homelab
 
-Status: 2026-11-16. Updated after every work session.
+Status: 2026-11-23. Updated after every work session.
 Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model.md](docs/threat-model.md).
 
 ## Open
 
 ### Next up
-- [ ] Deploy `stacks/torrent` (gluetun + qBittorrent 5.2.3 libtorrent v1 + mousehole) from `dev`: NAS folder `media/mam` + fstab mount, Proton WireGuard key with NAT-PMP, verify VPN IP + forwarded port, MAM connectable
-- [ ] Release: `dev` → `main` (PRs #24–#29: teamspeak, portainer, growlog stacks + TASK.md)
+- [ ] Release: `dev` → `main` (PRs #36–#40: gitleaks docs, torrent stack + fixes, TASK.md)
+- [ ] Remove Frigate from the camera stack (stopped since 2026-11-17, go2rtc stays as viewer): compose, run.sh, README, network.md; Erik: NPM host + DNS record + Frigate data
+- [ ] `~/.git-credentials`: remove credential helper + file, revoke the token on GitHub
 - [ ] GrowLog repo PR #1 (`CLAUDE.md`: deployment via compose in this repo) waiting for merge
 - [ ] GitHub: *Settings → Emails* → "Keep my email addresses private" + "Block command line pushes that expose my email"; local `git config --global user.email "88323457+iGridZ@users.noreply.github.com"`
 
@@ -22,7 +23,6 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Self-hosted GitHub Actions runner on the host: deploy changed stacks on merge to `main` (push to `main` only, no PR jobs on the runner)
 - [ ] Renovate for image update PRs (replaces watchtower)
 - [ ] Plan Ubuntu 22.04 → 24.04 (standard support ends 2027-04)
-- [ ] Frigate: ~27 % CPU is likely object detection (decoding already on the iGPU) → check detector, detect fps/resolution
 
 ### Ideas (not decided)
 - [ ] GrowLog CI: also build a `:dev` image (currently only `:latest` from `main`)
@@ -33,6 +33,12 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-23 – torrent stack (PRs #37–#39)
+- [x] `stacks/torrent` deployed from `dev`: gluetun (ProtonVPN WireGuard, NAT-PMP port forward), qBittorrent 5.2.3 libtorrent v1, mousehole; NAS `media/mam` mounted at `/media/share/mam`
+- [x] Fix: qBittorrent web UI on 8085 inside and outside (CSRF port check)
+- [x] Fix: mousehole `MOUSEHOLE_ALLOWED_HOSTS` with the LAN IP
+- [x] qBittorrent save path `/data/mam`, LAN subnet auth bypass set in the web UI; Erik: "everything is working"
 
 ### 2026-11-17 – home folder
 - [x] Old run scripts archived to `~/archive`; only `npm.sh`, `twitch.sh`, `vaultwarden.sh` remain (not migrated yet)
