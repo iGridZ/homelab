@@ -40,8 +40,7 @@ Removed:
 | **Direct** | Router port forward to a published container port | Non-HTTP protocol only, documented above |
 | **Internal** | Docker network only | No published port |
 
-Never proxy publicly: **go2rtc API (:1984)** and **Frigate's unauthenticated port (:5000)**
-— both have no login. Frigate is only ever exposed via its authenticated port 8971.
+Never proxy publicly: **go2rtc API (:1984)** — it has no login.
 
 ## Proxy hosts (Nginx Proxy Manager)
 
@@ -54,7 +53,6 @@ placeholders `<domain>` (main domain) and `<media-domain>` (Jellyfin).
 | `<media-domain>` | `http://jellyfin:8096` | Public | Jellyfin login |
 | `vw.<domain>` | `http://192.168.1.245:8081` | Public | Vaultwarden login (master password) |
 | `growlog.<domain>` | `http://growlog:8087` | Public | GrowLog login |
-| `frigate.<domain>` | `https://frigate:8971` | Public | Frigate login (authenticated port, never `:5000`) |
 | `sonarr.<domain>` | `http://sonarr:8989` | Public | Forms login |
 | `radarr.<domain>` | `http://radarr:7878` | Public | Forms login |
 | `sabnzbd.<domain>` | `http://sabnzbd:8080` | Public | SABnzbd login |

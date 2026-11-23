@@ -6,23 +6,20 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
-- [ ] Release: `dev` → `main` (PRs #36–#40: gitleaks docs, torrent stack + fixes, TASK.md)
-- [ ] Remove Frigate from the camera stack (stopped since 2026-11-17, go2rtc stays as viewer): compose, run.sh, README, network.md; Erik: NPM host + DNS record + Frigate data
+- [ ] Deploy Frigate removal: `docker compose up -d --remove-orphans`; Erik: delete NPM host `frigate.<domain>` + DNS record, then `/docker/config/frigate` + `/home/rock/media`
 - [ ] `~/.git-credentials`: remove credential helper + file, revoke the token on GitHub
-- [ ] GrowLog repo PR #1 (`CLAUDE.md`: deployment via compose in this repo) waiting for merge
 - [ ] GitHub: *Settings → Emails* → "Keep my email addresses private" + "Block command line pushes that expose my email"; local `git config --global user.email "88323457+iGridZ@users.noreply.github.com"`
 
 ### Remaining migrations
-- [ ] twitch-old-old (kept): stack with digest-pinned image; `run.py` + `cookies/` stay on the host; port 5000 needed?
+- [ ] twitch-old-old (kept): stack with digest-pinned image; `run.py` + `cookies/` stay on the host; port 5000 stays (only twitch uses it)
 - [ ] alert2 (kept): fork upstream `raftheunis87/tradingview-to-telegram-webhook-bot` → own repo, Node 14 → 22, Telegram token/chat id via `.env`, CI `dev`/`latest` to GHCR, then stack. Webhook not reachable right now (proxy host removed); if public again: NPM access list with TradingView webhook IPs + secret in the alert payload
 - [ ] After backup adapter: Vaultwarden + NPM stacks
 
 ### Planned
-- [ ] Delete `/docker/configs/radarr.bak-6.4.4` after a few days without problems
 - [ ] Backups: dedicated 256 GB SATA SSD via USB → restic, nightly systemd timer, documented restore test. **On hold**: USB-SATA adapters lost; buy one for 2.5" + 3.5" with its own 12 V power supply. Until then: local `cp -a …bak` before every migration
 - [ ] Self-hosted GitHub Actions runner on the host: deploy changed stacks on merge to `main` (push to `main` only, no PR jobs on the runner)
 - [ ] Renovate for image update PRs (replaces watchtower)
-- [ ] Plan Ubuntu 22.04 → 24.04 (standard support ends 2027-04)
+- [ ] Plan Ubuntu 22.04 → 24.04 (standard support ends 2027-04) — **do last**
 
 ### Ideas (not decided)
 - [ ] GrowLog CI: also build a `:dev` image (currently only `:latest` from `main`)
@@ -33,6 +30,12 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-23 – release + cleanup
+- [x] Release #41 (`dev` → `main`): torrent stack
+- [x] GrowLog repo PR #1 merged
+- [x] `/docker/configs/radarr.bak-6.4.4` deleted
+- [x] Frigate removed from camera stack in the repo (compose, run.sh, docs); go2rtc stays as viewer
 
 ### 2026-11-23 – torrent stack (PRs #37–#39)
 - [x] `stacks/torrent` deployed from `dev`: gluetun (ProtonVPN WireGuard, NAT-PMP port forward), qBittorrent 5.2.3 libtorrent v1, mousehole; NAS `media/mam` mounted at `/media/share/mam`
