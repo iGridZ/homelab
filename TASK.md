@@ -1,15 +1,16 @@
 # TASK.md – homelab
 
-Status: 2026-11-16. Updated after every work session.
+Status: 2026-11-23. Updated after every work session.
 Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model.md](docs/threat-model.md).
 
 ## Open
 
 ### Next up
-- [ ] Release: `dev` → `main` (PRs #24–#29: teamspeak, portainer, growlog stacks + TASK.md)
+- [ ] Release: `dev` → `main` (PRs #36–#40: gitleaks docs, torrent stack + fixes, TASK.md)
+- [ ] Remove Frigate from the camera stack (stopped since 2026-11-17, go2rtc stays as viewer): compose, run.sh, README, network.md; Erik: NPM host + DNS record + Frigate data
+- [ ] `~/.git-credentials`: remove credential helper + file, revoke the token on GitHub
 - [ ] GrowLog repo PR #1 (`CLAUDE.md`: deployment via compose in this repo) waiting for merge
-- [ ] Archive old run scripts in `~` (replaced by stacks): `beszel.sh`, `beszel_agent.sh`, `autoheal.sh`, `ddns.sh`, `changedetection.sh`, `sonarr.sh`, `radarr.sh`, `sab.sh`, `frigate.sh`, `go2rtx.sh`, `jellyfin.sh`, `ts6.sh`, `crafty.sh`, `growlog/growlog.sh`, old fetcher script
-- [ ] Scan existing repos (GrowLog, vivosun-fetcher) with gitleaks
+- [ ] GitHub: *Settings → Emails* → "Keep my email addresses private" + "Block command line pushes that expose my email"; local `git config --global user.email "88323457+iGridZ@users.noreply.github.com"`
 
 ### Remaining migrations
 - [ ] twitch-old-old (kept): stack with digest-pinned image; `run.py` + `cookies/` stay on the host; port 5000 needed?
@@ -22,7 +23,6 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Self-hosted GitHub Actions runner on the host: deploy changed stacks on merge to `main` (push to `main` only, no PR jobs on the runner)
 - [ ] Renovate for image update PRs (replaces watchtower)
 - [ ] Plan Ubuntu 22.04 → 24.04 (standard support ends 2027-04)
-- [ ] Frigate: ~27 % CPU is likely object detection (decoding already on the iGPU) → check detector, detect fps/resolution
 
 ### Ideas (not decided)
 - [ ] GrowLog CI: also build a `:dev` image (currently only `:latest` from `main`)
@@ -34,6 +34,22 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 
 ## Done
 
+### 2026-11-23 – torrent stack (PRs #37–#39)
+- [x] `stacks/torrent` deployed from `dev`: gluetun (ProtonVPN WireGuard, NAT-PMP port forward), qBittorrent 5.2.3 libtorrent v1, mousehole; NAS `media/mam` mounted at `/media/share/mam`
+- [x] Fix: qBittorrent web UI on 8085 inside and outside (CSRF port check)
+- [x] Fix: mousehole `MOUSEHOLE_ALLOWED_HOSTS` with the LAN IP
+- [x] qBittorrent save path `/data/mam`, LAN subnet auth bypass set in the web UI; Erik: "everything is working"
+
+### 2026-11-17 – home folder
+- [x] Old run scripts archived to `~/archive`; only `npm.sh`, `twitch.sh`, `vaultwarden.sh` remain (not migrated yet)
+- [x] Removed: old inventory script + output, `~/fetcher` (now on GitHub), SABnzbd backup zip from 2024, old Bitwarden install `~/bwdata`, `~/twds`
+- [x] Old fetcher `setup.sh` archived; `~/.env` + `~/.env.save` (Vivosun login, world-readable) deleted; all stack `.env` files are `600`
+
+### 2026-11-17 – secret scan
+- [x] gitleaks (full history) on homelab, growlog, vivosun-fetcher: no leaks
+- [x] Manual search for camera credentials, domains, public IP, Vivosun/Telegram secrets: none in any repo
+- [x] Only finding: personal Gmail address in commit author metadata of all three public repos
+
 ### 2026-11-17 – radarr 7
 - [x] Radarr 6.4.4 → 7.0.3.10918 (stable, not nightly): config backed up first, DB migration 243 ok, search → SABnzbd works
 - [x] Radarr *Allowed Hosts* set (domain, container name, localhost)
@@ -44,7 +60,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [x] Verified: Frigate + go2rtc live, one fetcher log line, recordings without audio
 
 ### Releases to `main`
-- [x] #5 repo skeleton, CI, Beszel · #9 autoheal, cloudflare-ddns, SSH with two YubiKeys · #15 changedetection, arr, proxy host review · #19 camera stack, host config · #23 Jellyfin, SMART results
+- [x] #5 repo skeleton, CI, Beszel · #9 autoheal, cloudflare-ddns, SSH with two YubiKeys · #15 changedetection, arr, proxy host review · #19 camera stack, host config · #23 Jellyfin, SMART results · #35 teamspeak, portainer, growlog stacks, camera single source, Radarr 7
 
 ### 2026-11-16 – compose migration status
 - [x] 10 stacks in the repo (16 containers), no `privileged` containers left

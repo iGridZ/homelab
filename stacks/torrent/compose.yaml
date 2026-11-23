@@ -1,0 +1,85 @@
+# Torrent stack for MAM: gluetun (ProtonVPN + port forwarding), qBittorrent, mousehole
+# qBittorrent and mousehole share gluetun's network, so MAM sees one VPN IP for both.
+# CLI equivalent: run.sh (keep both in sync)
+name: torrent
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  gluetun:
+    image: qmcgaw/gluetun:v3.41.3
+    container_name: gluetun
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      TZ: Europe/Berlin
+      VPN_SERVICE_PROVIDER: protonvpn
+      VPN_TYPE: wireguard
+      WIREGUARD_PRIVATE_KEY: ${PROTON_WG_PRIVATE_KEY:?set PROTON_WG_PRIVATE_KEY in .env}
+      SERVER_COUNTRIES: ${PROTON_SERVER_COUNTRIES:-Netherlands}
+      PORT_FORWARD_ONLY: "on"          # only P2P servers that support port forwarding
+      VPN_PORT_FORWARDING: "on"
+      # Tell qBittorrent the forwarded port and bind it to the VPN interface (gluetun wiki)
+      VPN_PORT_FORWARDING_UP_COMMAND: >-
+        /bin/sh -c 'wget -O- -nv --retry-connrefused --post-data
+        "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"{{VPN_INTERFACE}}\",\"random_port\":false,\"upnp\":false}"
+        http://127.0.0.1:8085/api/v2/app/setPreferences'
+      VPN_PORT_FORWARDING_DOWN_COMMAND: >-
+        /bin/sh -c 'wget -O- -nv --retry-connrefused --post-data
+        "json={\"listen_port\":0,\"current_network_interface\":\"lo\"}"
+        http://127.0.0.1:8085/api/v2/app/setPreferences'
+    ports:
+      - "8085:8085"     # qBittorrent web UI (LAN/VPN only); same port inside + outside, see README
+      - "5010:5010"     # mousehole web UI (LAN/VPN only)
+    volumes:
+      - /docker/configs/gluetun:/gluetun
+    logging: *logging
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:5.2.3-libtorrentv1
+    container_name: qbittorrent
+    restart: unless-stopped
+    network_mode: "service:gluetun"   # all traffic through the VPN; no VPN = no network
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    environment:
+      TZ: Europe/Berlin
+      PUID: "1000"
+      PGID: "1000"
+      WEBUI_PORT: "8085"
+    volumes:
+      - /docker/configs/qbittorrent:/config
+      - /media/share/mam:/data/mam
+    security_opt:
+      - no-new-privileges:true
+    logging: *logging
+
+  mousehole:
+    image: tmmrtn/mousehole:0.5.0
+    container_name: mousehole
+    restart: unless-stopped
+    network_mode: "service:gluetun"   # same public IP as qBittorrent
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    environment:
+      TZ: Europe/Berlin
+      MOUSEHOLE_AUTH_PASSWORD: ${MOUSEHOLE_AUTH_PASSWORD:?set MOUSEHOLE_AUTH_PASSWORD in .env}
+      # Host header allowlist; default is only localhost. Reached by LAN IP (also over WireGuard).
+      MOUSEHOLE_ALLOWED_HOSTS: "localhost,127.0.0.1,[::1],192.168.1.245,192.168.1.245:5010"
+    volumes:
+      - mousehole:/var/lib/mousehole       # MAM cookie survives restarts
+    security_opt:
+      - no-new-privileges:true
+    logging: *logging
+
+volumes:
+  mousehole:

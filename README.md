@@ -66,6 +66,7 @@ flowchart LR
 | vivosun-fetcher | Feeds camera credentials into go2rtc ([own repo](https://github.com/iGridZ/vivosun-fetcher)) | Internal |
 | changedetection.io | Website change monitoring ([stack](stacks/changedetection)) | LAN/VPN |
 | Crafty | Minecraft server controller | LAN/VPN |
+| gluetun + qBittorrent + mousehole | Torrents for MAM, fully behind ProtonVPN ([stack](stacks/torrent)) | LAN/VPN |
 | TeamSpeak 6 | Voice server ([stack](stacks/teamspeak)) | Public (direct port forward) |
 | Beszel + agent | Lightweight host/container monitoring ([stack](stacks/beszel)) | LAN |
 | cloudflare-ddns | Keeps DNS records pointed at the home IP ([stack](stacks/cloudflare-ddns)) | Internal |
