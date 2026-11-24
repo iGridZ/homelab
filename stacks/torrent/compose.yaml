@@ -1,4 +1,5 @@
-# Torrent stack for MAM: gluetun (ProtonVPN + port forwarding), qBittorrent, mousehole
+# Torrent stack for MAM: gluetun (ProtonVPN + port forwarding), qBittorrent, mousehole,
+# pf-watchdog (reconnects the VPN when port forwarding is lost)
 # qBittorrent and mousehole share gluetun's network, so MAM sees one VPN IP for both.
 # CLI equivalent: run.sh (keep both in sync)
 name: torrent
@@ -23,7 +24,7 @@ services:
       VPN_SERVICE_PROVIDER: protonvpn
       VPN_TYPE: wireguard
       WIREGUARD_PRIVATE_KEY: ${PROTON_WG_PRIVATE_KEY:?set PROTON_WG_PRIVATE_KEY in .env}
-      SERVER_COUNTRIES: ${PROTON_SERVER_COUNTRIES:-Netherlands}
+      SERVER_COUNTRIES: ${PROTON_SERVER_COUNTRIES:-Netherlands,Switzerland,Sweden}
       PORT_FORWARD_ONLY: "on"          # only P2P servers that support port forwarding
       VPN_PORT_FORWARDING: "on"
       # Tell qBittorrent the forwarded port and bind it to the VPN interface (gluetun wiki)
@@ -39,7 +40,13 @@ services:
       - "8085:8085"     # qBittorrent web UI (LAN/VPN only); same port inside + outside, see README
       - "5010:5010"     # mousehole web UI (LAN/VPN only)
     volumes:
-      - /docker/configs/gluetun:/gluetun
+      - /docker/configs/gluetun:/gluetun   # incl. auth/config.toml (control API key, see README)
+    # Image default is unhealthy after one failed 5 s check. autoheal watches all
+    # containers and would restart gluetun during a short VPN reconnect, which cuts
+    # qBittorrent and mousehole off the network. Only a 3 min outage counts.
+    healthcheck:
+      interval: 10s
+      retries: 18
     logging: *logging
 
   qbittorrent:
@@ -77,6 +84,29 @@ services:
       MOUSEHOLE_ALLOWED_HOSTS: "localhost,127.0.0.1,[::1],192.168.1.245,192.168.1.245:5010"
     volumes:
       - mousehole:/var/lib/mousehole       # MAM cookie survives restarts
+    security_opt:
+      - no-new-privileges:true
+    logging: *logging
+
+  pf-watchdog:
+    image: qmcgaw/gluetun:v3.41.3     # reuses gluetun's image: has sh + GNU wget
+    container_name: pf-watchdog
+    restart: unless-stopped
+    network_mode: "service:gluetun"   # reaches the control API on 127.0.0.1:8000
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "/pf-watchdog.sh"]
+    environment:
+      TZ: Europe/Berlin
+      GLUETUN_API_KEY: ${GLUETUN_API_KEY:?set GLUETUN_API_KEY in .env}
+    volumes:
+      - ./pf-watchdog.sh:/pf-watchdog.sh:ro
+    healthcheck:
+      disable: true                   # gluetun image's healthcheck is for gluetun itself
+    read_only: true
+    cap_drop:
+      - ALL
     security_opt:
       - no-new-privileges:true
     logging: *logging
