@@ -60,6 +60,29 @@ flowchart LR
 6. mousehole (`:5010`): log in, paste the MAM cookie.
 7. In MAM, the seedbox / connectable status should turn green.
 
+## Watch folder
+
+Drop `.torrent` files into one folder from the PC or phone (LAN or WireGuard), and
+qBittorrent adds them. No extra container: the folder lives in the MAM share, which is
+already mounted.
+
+| Where | Path |
+|---|---|
+| NAS | `media/mam/watch` |
+| PC (SMB) | `\\192.168.1.250\media\mam\watch` |
+| Android | SMB file manager (e.g. Material Files) → `192.168.1.250`, share `media` → `mam/watch` |
+| qBittorrent | `/data/mam/watch` |
+
+qBittorrent → *Options → Downloads → Automatically add torrents from*: `/data/mam/watch`,
+save to the default save location (`/data/mam`). qBittorrent removes the `.torrent`
+after adding it, so it needs write access to the folder (check below). On NFS it polls
+the folder, so a new file can take a few seconds.
+
+```bash
+# file put there from the PC must be deletable by qBittorrent (uid 1000)
+docker exec -u abc qbittorrent sh -c 'ls -ln /data/mam/watch && rm -v /data/mam/watch/test.txt'
+```
+
 ## Checks
 
 ```bash
