@@ -6,6 +6,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
+- [ ] Deploy `pf-watchdog` + server pool (NL, CH, SE) in `stacks/torrent`: API key in `.env` + `/docker/configs/gluetun/auth/config.toml`, then `up -d --force-recreate`; check a reconnect in the logs
 - [ ] Release: `dev` → `main` (PRs #42–#43: Frigate removal, TASK.md)
 - [ ] Self-hosted GitHub Actions runner on rock (see Planned)
 

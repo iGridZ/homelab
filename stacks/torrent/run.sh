@@ -7,6 +7,7 @@ cd "$(dirname "$0")"
 set -a; . ./.env; set +a
 : "${PROTON_WG_PRIVATE_KEY:?set PROTON_WG_PRIVATE_KEY in .env}"
 : "${MOUSEHOLE_AUTH_PASSWORD:?set MOUSEHOLE_AUTH_PASSWORD in .env}"
+: "${GLUETUN_API_KEY:?set GLUETUN_API_KEY in .env}"
 
 LOG_OPTS=(--log-driver json-file --log-opt max-size=10m --log-opt max-file=3)
 
@@ -17,7 +18,7 @@ read -r -d '' DOWN_CMD <<'CMD' || true
 /bin/sh -c 'wget -O- -nv --retry-connrefused --post-data "json={\"listen_port\":0,\"current_network_interface\":\"lo\"}" http://127.0.0.1:8085/api/v2/app/setPreferences'
 CMD
 
-docker rm -f mousehole qbittorrent gluetun >/dev/null 2>&1 || true
+docker rm -f pf-watchdog mousehole qbittorrent gluetun >/dev/null 2>&1 || true
 docker volume create mousehole >/dev/null
 
 docker run -d --name gluetun \
@@ -28,7 +29,7 @@ docker run -d --name gluetun \
   -e VPN_SERVICE_PROVIDER=protonvpn \
   -e VPN_TYPE=wireguard \
   -e WIREGUARD_PRIVATE_KEY="$PROTON_WG_PRIVATE_KEY" \
-  -e SERVER_COUNTRIES="${PROTON_SERVER_COUNTRIES:-Netherlands}" \
+  -e SERVER_COUNTRIES="${PROTON_SERVER_COUNTRIES:-Netherlands,Switzerland,Sweden}" \
   -e PORT_FORWARD_ONLY=on \
   -e VPN_PORT_FORWARDING=on \
   -e VPN_PORT_FORWARDING_UP_COMMAND="$UP_CMD" \
@@ -36,6 +37,7 @@ docker run -d --name gluetun \
   -p 8085:8085 \
   -p 5010:5010 \
   -v /docker/configs/gluetun:/gluetun \
+  --health-interval 10s --health-retries 18 \
   "${LOG_OPTS[@]}" \
   qmcgaw/gluetun:v3.41.3
 
@@ -62,3 +64,17 @@ docker run -d --name mousehole \
   --security-opt no-new-privileges:true \
   "${LOG_OPTS[@]}" \
   tmmrtn/mousehole:0.5.0
+
+docker run -d --name pf-watchdog \
+  --restart unless-stopped \
+  --network container:gluetun \
+  --entrypoint /bin/sh \
+  -e TZ=Europe/Berlin \
+  -e GLUETUN_API_KEY="$GLUETUN_API_KEY" \
+  -v "$PWD/pf-watchdog.sh":/pf-watchdog.sh:ro \
+  --no-healthcheck \
+  --read-only \
+  --cap-drop ALL \
+  --security-opt no-new-privileges:true \
+  "${LOG_OPTS[@]}" \
+  qmcgaw/gluetun:v3.41.3 /pf-watchdog.sh
