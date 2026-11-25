@@ -6,7 +6,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
-- [ ] Deploy `pf-watchdog` + server pool (NL, CH, SE) in `stacks/torrent`: API key in `.env` + `/docker/configs/gluetun/auth/config.toml`, then `up -d --force-recreate`; check a reconnect in the logs
+- [ ] `pf-watchdog`: confirm the first real reconnect in `docker logs pf-watchdog` ("reconnecting VPN" → new port in qBittorrent)
 - [ ] Release: `dev` → `main` (PRs #42–#43: Frigate removal, TASK.md)
 - [ ] Self-hosted GitHub Actions runner on rock (see Planned)
 
@@ -30,6 +30,10 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-24 – torrent pf-watchdog (PR #45)
+- [x] `pf-watchdog` deployed: control API key auth works (no 401 on its checks), port forwarded after recreate
+- [x] Server pool Netherlands, Switzerland, Sweden; gluetun healthcheck 10 s × 18 (autoheal-safe)
 
 ### 2026-11-23 – release + cleanup
 - [x] Release #41 (`dev` → `main`): torrent stack
