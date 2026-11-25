@@ -18,7 +18,7 @@ jobs:
     name: shellcheck
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Lint shell scripts
         run: |
           mapfile -t files < <(git ls-files '*.sh')
@@ -29,7 +29,7 @@ jobs:
     name: yamllint
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install yamllint
         run: pip install --user yamllint==1.35.1
       - name: Lint YAML
@@ -39,7 +39,7 @@ jobs:
     name: compose validation
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Validate every stack
         run: |
           shopt -s nullglob
@@ -60,7 +60,7 @@ jobs:
     name: secret scan
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0  # scan the full history, not just the last commit
       - name: Run gitleaks
