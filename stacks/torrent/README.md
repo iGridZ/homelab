@@ -38,10 +38,9 @@ flowchart LR
 - **One IP for MAM.** qBittorrent and mousehole use `network_mode: service:gluetun`,
   so the tracker and the dynamic-seedbox API always see the same VPN IP.
 - **Connectable.** gluetun gets a forwarded port from ProtonVPN and sets it as
-  qBittorrent's listen port via the API (up command). On reconnect the new port is set
-  automatically.
-- **No leaks.** If the VPN is down, gluetun's firewall blocks all internet traffic; only
-  the LAN (`192.168.1.0/24`) stays reachable.
+  qBittorrent's listen port via the API (up command), binding qBittorrent to the VPN
+  interface. On reconnect the new port is set automatically.
+- **No leaks.** If the VPN is down, gluetun's firewall blocks all traffic.
 - **libtorrent v1:** lower RAM use and more reliable when seeding from NFS than v2.
 - **Web UI port 8085 on both sides.** qBittorrent's CSRF check compares the browser's
   port with its own; a mapping like `8085:8080` answers every request with
@@ -63,14 +62,6 @@ flowchart LR
   reconnect. 10 s × 18 retries = only a 3 min outage counts.
 - **Server pool.** `PROTON_SERVER_COUNTRIES` lists several countries, so a reconnect
   can land on another server.
-- **LAN peers.** `FIREWALL_OUTBOUND_SUBNETS=192.168.1.0/24` lets qBittorrent connect to
-  peers in the LAN (e.g. seed a public torrent to the PC at LAN speed). Internet traffic
-  still only leaves through the VPN. qBittorrent listens on any interface instead of
-  `tun0` for this; the kill switch is gluetun's firewall. The listen port is Proton's
-  random forwarded port, so it cannot be published: the **server connects to the PC**
-  (*Peers → Add peers → `<pc-ip>:<pc-port>`*), not the other way round. Local Peer
-  Discovery does not reach the LAN from Docker's bridge network. For MAM, copy finished
-  files from the NAS share over SMB instead.
 - The `ERROR … setPreferences … [1]` lines in gluetun's log are wget's normal success
   output on stderr, not errors.
 
@@ -127,7 +118,7 @@ docker logs gluetun 2>&1 | grep -iE "port forwarded|public ip"   # VPN IP + forw
 docker exec gluetun wget -qO- https://ipinfo.io/ip                  # must NOT be the home IP
 ```
 
-qBittorrent → *Settings → Connection*: listen port = forwarded port; *Advanced*: interface = any.
+qBittorrent → *Settings → Connection*: listen port = forwarded port, interface = `tun0`.
 
 ```bash
 docker logs pf-watchdog   # "started …", later "no forwarded port" / "reconnecting VPN" if needed
