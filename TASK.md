@@ -6,6 +6,7 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
+- [ ] Deploy LAN peers in `stacks/torrent` (`FIREWALL_OUTBOUND_SUBNETS`, qBittorrent interface any): `up -d --force-recreate`, test seeding a public torrent to the PC
 - [ ] `pf-watchdog`: confirm the first real reconnect in `docker logs pf-watchdog` ("reconnecting VPN" → new port in qBittorrent)
 - [ ] Release: `dev` → `main` (PRs #42–#43: Frigate removal, TASK.md)
 - [ ] Self-hosted GitHub Actions runner on rock (see Planned)
