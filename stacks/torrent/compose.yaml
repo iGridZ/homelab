@@ -25,12 +25,14 @@ services:
       VPN_TYPE: wireguard
       WIREGUARD_PRIVATE_KEY: ${PROTON_WG_PRIVATE_KEY:?set PROTON_WG_PRIVATE_KEY in .env}
       SERVER_COUNTRIES: ${PROTON_SERVER_COUNTRIES:-Netherlands,Switzerland,Sweden}
+      FIREWALL_OUTBOUND_SUBNETS: "192.168.1.0/24"   # LAN peers (seed to the PC); internet stays VPN only
       PORT_FORWARD_ONLY: "on"          # only P2P servers that support port forwarding
       VPN_PORT_FORWARDING: "on"
-      # Tell qBittorrent the forwarded port and bind it to the VPN interface (gluetun wiki)
+      # Tell qBittorrent the forwarded port. Interface "" = any, so LAN peers work too;
+      # gluetun's firewall still sends all internet traffic through the VPN only.
       VPN_PORT_FORWARDING_UP_COMMAND: >-
         /bin/sh -c 'wget -O- -nv --retry-connrefused --post-data
-        "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"{{VPN_INTERFACE}}\",\"random_port\":false,\"upnp\":false}"
+        "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"\",\"random_port\":false,\"upnp\":false}"
         http://127.0.0.1:8085/api/v2/app/setPreferences'
       VPN_PORT_FORWARDING_DOWN_COMMAND: >-
         /bin/sh -c 'wget -O- -nv --retry-connrefused --post-data
