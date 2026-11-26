@@ -12,7 +12,7 @@ set -a; . ./.env; set +a
 LOG_OPTS=(--log-driver json-file --log-opt max-size=10m --log-opt max-file=3)
 
 read -r -d '' UP_CMD <<'CMD' || true
-/bin/sh -c 'wget -O- -nv --retry-connrefused --post-data "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"\",\"random_port\":false,\"upnp\":false}" http://127.0.0.1:8085/api/v2/app/setPreferences'
+/bin/sh -c 'wget -O- -nv --retry-connrefused --post-data "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"{{VPN_INTERFACE}}\",\"random_port\":false,\"upnp\":false}" http://127.0.0.1:8085/api/v2/app/setPreferences'
 CMD
 read -r -d '' DOWN_CMD <<'CMD' || true
 /bin/sh -c 'wget -O- -nv --retry-connrefused --post-data "json={\"listen_port\":0,\"current_network_interface\":\"lo\"}" http://127.0.0.1:8085/api/v2/app/setPreferences'
@@ -30,7 +30,6 @@ docker run -d --name gluetun \
   -e VPN_TYPE=wireguard \
   -e WIREGUARD_PRIVATE_KEY="$PROTON_WG_PRIVATE_KEY" \
   -e SERVER_COUNTRIES="${PROTON_SERVER_COUNTRIES:-Netherlands,Switzerland,Sweden}" \
-  -e FIREWALL_OUTBOUND_SUBNETS=192.168.1.0/24 \
   -e PORT_FORWARD_ONLY=on \
   -e VPN_PORT_FORWARDING=on \
   -e VPN_PORT_FORWARDING_UP_COMMAND="$UP_CMD" \

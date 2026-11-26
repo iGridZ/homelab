@@ -6,7 +6,6 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 ## Open
 
 ### Next up
-- [ ] Deploy LAN peers in `stacks/torrent` (`FIREWALL_OUTBOUND_SUBNETS`, qBittorrent interface any): `up -d --force-recreate`, test seeding a public torrent to the PC
 - [ ] `pf-watchdog`: confirm the first real reconnect in `docker logs pf-watchdog` ("reconnecting VPN" → new port in qBittorrent)
 - [ ] Release: `dev` → `main` (PRs #42–#43: Frigate removal, TASK.md)
 - [ ] Self-hosted GitHub Actions runner on rock (see Planned)
@@ -31,6 +30,11 @@ Background and reasoning: [docs/decisions/](docs/decisions/), [docs/threat-model
 - [ ] Trivy image scan in CI
 
 ## Done
+
+### 2026-11-26 – LAN peers tried, reverted (PR #48 → revert)
+- [x] Tried: seed a public torrent from the server to the PC over LAN (`FIREWALL_OUTBOUND_SUBNETS`, qBittorrent on any interface)
+- [x] Network path OK (`nc` from gluetun to PC port open), but qBittorrent never sends a packet to a manually added LAN peer (tcpdump: 0 packets, also bound to eth0). Reverted: qBittorrent back on `tun0`, no LAN exception
+- [x] Instead: copy finished files from the NAS over SMB, add torrent on the PC, *Force recheck*
 
 ### 2026-11-24 – torrent pf-watchdog (PR #45)
 - [x] `pf-watchdog` deployed: control API key auth works (no 401 on its checks), port forwarded after recreate
